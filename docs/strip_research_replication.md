@@ -139,7 +139,7 @@ Conséquence pour la couverture : la perp à détenir vaut $`h=-\Delta_{\text{to
 - À prix justes, $`E_{\mathbb Q}[\Pi_{\text{strip}}]=Q[P(K_{\max})-P(K_{\min})]`$. Le strike unique a la même espérance. Le strip change la distribution du PnL couvert, pas son espérance. Les frais en retirent une partie.
 - Frais Kalshi : $`\lceil 0{,}07\cdot C\cdot P(1-P)\rceil`$ au cent supérieur, par ordre. Un strip de $`M`$ ordres paie au moins $`M`$ arrondis. Le coût est donc plus élevé qu'un ordre unique.
 - Spread bid-ask : un strip traverse $`M`$ spreads au lieu d'un.
-- Une seule journée ne permet aucune conclusion statistique. L'erreur-type de la moyenne journalière est $`\sigma_{\text{PnL}}/\sqrt n`$ ; avec $`n=1`$, un résultat de −382 &#36; n'est pas informatif sur l'espérance.
+- Une seule journée ne permet aucune conclusion statistique. L'erreur-type de la moyenne journalière est $`\sigma_{\text{PnL}}/\sqrt n`$ ; avec $`n=1`$, un résultat de −382 $ n'est pas informatif sur l'espérance.
 - Le choix de poids non uniformes au-delà du pas constant est traité dans `strip_research_weights.md`. Ce document ne couvre que la réplication à pas constant.
 
 ## Sources

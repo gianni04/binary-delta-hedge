@@ -191,7 +191,7 @@ def figure(data: Rows) -> None:
 
 def main() -> None:
     data = load()
-    OUT_MD.write_text(report(data).replace("$", "&#36;"), encoding="utf-8")  # literal dollars, not GitHub math
+    OUT_MD.write_text(report(data).replace(" $", " $"), encoding="utf-8")  # GitHub reads "<space>$" as math
     figure(data)
     print(OUT_MD, OUT_PNG)
 
