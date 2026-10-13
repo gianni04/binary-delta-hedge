@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "binary-delta-hedge"
+version = "0.1.0"
+description = "Delta hedging of BTC binaries (Polymarket, Kalshi) with a Hyperliquid perp, benchmarked against Deribit options."
+requires-python = ">=3.12"
+dependencies = ["websockets>=15", "httpx>=0.28", "numpy>=2", "scipy>=1.13", "matplotlib>=3.9"]
+
+[project.optional-dependencies]
+dev = ["mypy>=1.10", "pytest>=8", "ruff>=0.5"]
+
+[tool.setuptools]
+packages = ["api", "core", "strategies", "risk", "sim", "reports", "backtest"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+packages = ["api", "core", "strategies", "risk", "sim", "reports", "backtest", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["scipy.*", "matplotlib.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[[tool.mypy.overrides]]
+module = ["reports.plot"]
+disallow_untyped_calls = false

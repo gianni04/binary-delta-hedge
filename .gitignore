@@ -1,0 +1,15 @@
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+
+# raw API caches (about 1 GB), re-downloaded by the backtests
+data/kalshi_multi/20*/
+data/deribit/20*/*
+!data/deribit/2026-06-15/summary.json
+data/raw_*.jsonl
+data/snapshot/
+data/v0_stale_l2book/
+*.log

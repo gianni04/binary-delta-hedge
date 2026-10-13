@@ -1,0 +1,21 @@
+{
+  "spec": {
+    "slug": "bitcoin-above-84k-on-october-12-2026",
+    "question": "Will the price of Bitcoin be above $84,000 on October 12?",
+    "strike": 84000.0,
+    "expiry_ms": 1791820800000,
+    "yes_token_id": "102213575204902074760005916744838468334765332333994096763253127452371697884776",
+    "tick_size": 0.01,
+    "min_order_size": 5.0,
+    "taker_fee_bps": 700.0,
+    "maker_fee_bps": 0.0
+  },
+  "perp": {
+    "coin": "BTC",
+    "sz_decimals": 5,
+    "max_leverage": 40,
+    "min_notional": 10.0
+  },
+  "quantity": 1000.0,
+  "sigma_source": "implied"
+}

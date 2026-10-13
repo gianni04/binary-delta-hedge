@@ -1,0 +1,55 @@
+{
+  "jour": "2026-09-21",
+  "S0": 81103.0,
+  "S1": 87047.0,
+  "variation": 0.07328952073289519,
+  "hedge_statique_btc": {
+    "single": 0.26448,
+    "strip": 0.23962
+  },
+  "delta_horaire_btc": {
+    "single": {
+      "min": 0.0,
+      "max": 0.30424
+    },
+    "strip": {
+      "min": 0.0,
+      "max": 0.26809
+    }
+  },
+  "iv_rv": {
+    "iv_mean": 0.40300772946859903,
+    "iv_median": 0.38799999999999996,
+    "rv_mean": 0.3428183004701771,
+    "rv_median": 0.3156607610954418,
+    "gap_mean": 0.060189428998421994,
+    "gap_median": 0.08406281611736943,
+    "pct_iv_gt_rv": 71.01449275362319
+  },
+  "funding": {
+    "single": {
+      "funding_cumul_final": -643.26,
+      "somme_funding_paid": 643.26,
+      "hedge_moyen_btc": 0.2688900966183575,
+      "jours": 207
+    },
+    "strip": {
+      "funding_cumul_final": -580.37,
+      "somme_funding_paid": 580.37,
+      "hedge_moyen_btc": 0.24177908212560387,
+      "jours": 207
+    },
+    "put_spread": {
+      "funding_cumul_final": -568.72,
+      "somme_funding_paid": 568.72,
+      "hedge_moyen_btc": 0.24056120772946862,
+      "jours": 207
+    },
+    "put": {
+      "funding_cumul_final": -504.33,
+      "somme_funding_paid": 504.33,
+      "hedge_moyen_btc": 0.21583072463768116,
+      "jours": 207
+    }
+  }
+}

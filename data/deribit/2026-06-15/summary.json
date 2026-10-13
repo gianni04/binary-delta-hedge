@@ -1,0 +1,104 @@
+{
+  "date": "2026-06-15",
+  "expiry": "2026-06-16",
+  "spot_gap_t0": 1.8754723846478104e-06,
+  "spot_gap_t1": 0.00016738067885579974,
+  "n": 113.0,
+  "step": 250.0,
+  "q": 0.452,
+  "q_rounded": 0.5,
+  "k_lo": 62999.99,
+  "k_hi": 64999.99,
+  "width_strip": 2250.0,
+  "width_deribit": 2000.0,
+  "max_payoff_gap_usd": -113.0,
+  "put_spread": {
+    "instruments": [
+      "BTC-16JUN26-65000-P",
+      "BTC-16JUN26-63000-P"
+    ],
+    "strikes": [
+      65000.0,
+      63000.0
+    ],
+    "sides": [
+      1,
+      -1
+    ],
+    "q": 0.452,
+    "iv0": [
+      0.3915400248032287,
+      0.4363932323728292
+    ],
+    "iv1": [
+      0.4090809544103615,
+      0.6641420440440786
+    ],
+    "s0": 63983.88,
+    "s1": 66495.13,
+    "premium_entry": 435.6161133317982,
+    "value_exit": 3.9735715349395377,
+    "fee_deribit_entry": 17.352428256,
+    "fee_deribit_exit": 1.6669765416812394,
+    "fee_combo_variant": 9.758050619774341,
+    "spread_source_t0": "expiry",
+    "spread_source_t1": "expiry",
+    "spread_cost": 7.977202405827993,
+    "option_pnl": -431.64254179685867,
+    "hedge_btc": 0.204,
+    "perp_notional_usd": 13052.711519999999,
+    "perp_pnl": 509.99999999999994,
+    "hl_fees": 11.9769624,
+    "funding_paid": 3.3127608120948,
+    "n_trades_t0": 31,
+    "n_trades_t1": 155,
+    "total_pnl": 44.048330193365246,
+    "max_gain_usd": 468.3838866682018
+  },
+  "put": {
+    "instruments": [
+      "BTC-16JUN26-64000-P"
+    ],
+    "strikes": [
+      64000.0
+    ],
+    "sides": [
+      1
+    ],
+    "q": 0.452,
+    "iv0": [
+      0.3873919019946591
+    ],
+    "iv1": [
+      0.5240874423926212
+    ],
+    "s0": 63983.88,
+    "s1": 66495.13,
+    "premium_entry": 288.07932039400384,
+    "value_exit": 1.8425062466272895,
+    "fee_deribit_entry": 8.676214128,
+    "fee_deribit_exit": 0.23031328082841118,
+    "fee_combo_variant": 8.906527408828412,
+    "spread_source_t0": "expiry",
+    "spread_source_t1": "expiry",
+    "spread_cost": 3.9886012029139963,
+    "option_pnl": -286.23681414737655,
+    "hedge_btc": 0.22565,
+    "perp_notional_usd": 14437.962521999998,
+    "perp_pnl": 564.125,
+    "hl_fees": 13.248046889999998,
+    "funding_paid": 3.664335672790155,
+    "n_trades_t0": 31,
+    "n_trades_t1": 155,
+    "total_pnl": 252.06927588100487,
+    "max_gain_usd": 28639.920679605995
+  },
+  "kalshi": {
+    "premium": 520.93,
+    "fees": 14.95,
+    "spread": 11.864999999999995,
+    "total_pnl": 105.23056801185534,
+    "hedge_btc": 0.26437,
+    "legs": 9
+  }
+}
