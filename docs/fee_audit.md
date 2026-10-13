@@ -25,10 +25,10 @@ L'enregistrement s'arrête à 10:04 UTC. Le kill-switch se déclenche à T − 2
 
 | Stratégie | Fills | Frais PM | Frais HL | Prime payée | Frais / prime | Rebalancements dyn. | Notionnel HL |
 |---|---|---|---|---|---|---|---|
-| statique | 42 | 16,05133 $ | 5,70051 $ | 356,22 $ | 6,106 % | 0 | 38 003,37 $ |
-| dynamique | 1 550 | 16,05133 $ | 181,43478 $ | 356,22 $ | 55,439 % | 1 548 | 403 188,39 $ |
+| statique | 42 | 16,05133 \$ | 5,70051 \$ | 356,22 \$ | 6,106 % | 0 | 38 003,37 \$ |
+| dynamique | 1 550 | 16,05133 \$ | 181,43478 \$ | 356,22 \$ | 55,439 % | 1 548 | 403 188,39 \$ |
 
-Les frais Polymarket sont identiques dans les deux stratégies, puisque l'achat d'entrée est le même. L'écart vient des frais taker Hyperliquid de la couverture dynamique : 181,43 $, soit 55,4 % de la prime, contre 6,1 % pour la statique (frais seuls, hors spread et funding).
+Les frais Polymarket sont identiques dans les deux stratégies, puisque l'achat d'entrée est le même. L'écart vient des frais taker Hyperliquid de la couverture dynamique : 181,43 \$, soit 55,4 % de la prime, contre 6,1 % pour la statique (frais seuls, hors spread et funding).
 
 ## Limites
 

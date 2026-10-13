@@ -429,7 +429,7 @@ def main() -> None:
     ap.add_argument("--png", type=Path, default=ROOT / "reports" / "multi_day.png")
     args = ap.parse_args()
     tbl = load(args.csv)
-    args.md.write_text(build_report(tbl), encoding="utf-8")
+    args.md.write_text(build_report(tbl).replace("$", "\\$"), encoding="utf-8")  # literal dollars, not GitHub math
     make_figure(tbl, args.png)
     print(f"wrote {args.md} and {args.png}")
 

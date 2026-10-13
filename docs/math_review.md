@@ -23,7 +23,7 @@ Vérification numérique : grille de 16 605 points (S/K ∈ [0,9 ; 1,1] × 41, �
 
 Dérivation : ∂/∂S [φ(d2)/(Sσ√T)] = φ'(d2)/(Sσ√T)² − φ(d2)/(S²σ√T). Avec φ' = −xφ, on obtient −φ(d2)(d2 + σ√T)/(S²σ²T) = −φ(d2) d1/(S²σ²T). Le code est identique.
 
-Vérification numérique : même grille, différence finie de Δ. À h = 1e-7·S, erreur relative max 2,8e-7. À h = 1e-4·S (hors test), l'erreur monte à 30 % : c'est la troncature de la différence finie (largeur de transition σ√T·S ≈ 62 $ à T = 5 min), pas le code. Le test `rel=1e-4, abs=1e-14` est donc correct mais peu sensible.
+Vérification numérique : même grille, différence finie de Δ. À h = 1e-7·S, erreur relative max 2,8e-7. À h = 1e-4·S (hors test), l'erreur monte à 30 % : c'est la troncature de la différence finie (largeur de transition σ√T·S ≈ 62 \$ à T = 5 min), pas le code. Le test `rel=1e-4, abs=1e-14` est donc correct mais peu sensible.
 
 ## 3. Annualisation
 
@@ -55,7 +55,7 @@ Exemples (T = 6 h, σ = 0,5 comme référence) :
 
 Le chemin `None` est couvert par `test_implied_vol_none_when_mid_above_peak`.
 
-Fréquence sur la session du 12/10/2026 : nulle. Le YES cotait autour de 0,34 avec S sous K = 84 000 $, loin du pic, et les 4 880 valorisations ont toutes une σ implicite. Près de l'ATM, S traverse K en continu et le mid oscille autour de 0,5 : c'est là que le `None` apparaîtrait.
+Fréquence sur la session du 12/10/2026 : nulle. Le YES cotait autour de 0,34 avec S sous K = 84 000 \$, loin du pic, et les 4 880 valorisations ont toutes une σ implicite. Près de l'ATM, S traverse K en continu et le mid oscille autour de 0,5 : c'est là que le `None` apparaîtrait.
 
 Un repli brut sur la DVOL poserait trois problèmes :
 - (a) Changement de source à chaque tick. Autour de S/K = 0,999, la σ implicite vaut 1,05 alors que la DVOL vaut typiquement 0,5 : le Δ, donc la taille de couverture, change d'un facteur 2 selon la source. La stratégie dynamique ferait des allers-retours taker (4,5 bp).
@@ -89,7 +89,7 @@ Formule correcte. Le biais disparaît avec la grille de 60 s, il reste si `ewma`
 
 Comportement analytique : pour S ≠ K, Δ et Γ tendent vers 0 quand T → 0 (φ(d2) décroît vite). L'explosion est concentrée à l'ATM : Δ ∝ T^(−1/2) et Γ ∝ T^(−1/2) (car d1 ≈ σ√T/2 à l'ATM, Γ = −φ(0)/(2S²σ√T)). Pour T ≤ 0, le code renvoie Δ = Γ = 0 et le prix égal au payoff, cohérent avec le kill-switch à T − 2 h.
 
-Q = 1000 parts, S = K = 110 000 $, σ = 0,5, taille de couverture h = −QΔ en BTC :
+Q = 1000 parts, S = K = 110 000 \$, σ = 0,5, taille de couverture h = −QΔ en BTC :
 
 | T | Δ/part (BTC) | h = −QΔ (BTC) | h notionnel (\$) | Γ/part (BTC/\$) | Q·Γ (BTC par \$ de mouvement) | w = Sσ√T (\$) | Mouvement pour déclencher le seuil dynamique (10 \$/S) |
 |---|---|---|---|---|---|---|---|
@@ -98,11 +98,11 @@ Q = 1000 parts, S = K = 110 000 $, σ = 0,5, taille de couverture h = −QΔ en 
 | 30 min | 9,60e-4 | −0,960 | −105 610 | −4,36e-9 | −4,36e-6 | 416 | ~21 \$ |
 
 Lecture :
-- Le notionnel de couverture vaut −Q·φ(0)/(σ√T), indépendant de S. Il vaut 30 à 106 fois le payoff maximal de la position (1 000 $). C'est un delta, pas une couverture de valeur. À prendre en compte pour la marge et le levier HL (`max_leverage`).
-- Le seuil dynamique 10 $/S ≈ 9,1e-5 BTC est dépassé après environ 21 à 72 $ de mouvement selon T. Le modèle linéaire n'est valable que pour |dS| ≪ w (415 à 1 440 $).
+- Le notionnel de couverture vaut −Q·φ(0)/(σ√T), indépendant de S. Il vaut 30 à 106 fois le payoff maximal de la position (1 000 \$). C'est un delta, pas une couverture de valeur. À prendre en compte pour la marge et le levier HL (`max_leverage`).
+- Le seuil dynamique 10 \$/S ≈ 9,1e-5 BTC est dépassé après environ 21 à 72 \$ de mouvement selon T. Le modèle linéaire n'est valable que pour |dS| ≪ w (415 à 1 440 \$).
 - `szDecimals` BTC vaut 5 sur Hyperliquid, soit un lot de 1e-5 BTC ([microstructure_review.md](microstructure_review.md)). Les tailles ci-dessus sont grandes devant ce lot.
 
-Unités : V est en $ par part, S en $ par BTC, donc Δ est en BTC par part.
+Unités : V est en \$ par part, S en \$ par BTC, donc Δ est en BTC par part.
 
 ## Points traités
 

@@ -18,7 +18,7 @@ Sources officielles, sauf mention contraire, relevées le 2026-10-12. Chaque fai
 **Tick / lot** (https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/tick-and-lot-size.md)
 - Prix : au plus 5 chiffres significatifs et au plus `MAX_DECIMALS − szDecimals` décimales (MAX_DECIMALS = 6 pour les perps, 8 pour le spot). Les prix entiers sont toujours autorisés.
 - Taille : arrondie à `szDecimals`.
-- Minimum notionnel de 10 $ : non confirmé (ni sur cette page, ni sur la fiche perpetuals).
+- Minimum notionnel de 10 \$ : non confirmé (ni sur cette page, ni sur la fiche perpetuals).
 
 **szDecimals réel** (POST https://api.hyperliquid.xyz/info `{"type":"meta"}`, exécuté 2026-10-12) : BTC `szDecimals=5`, `maxLeverage=40`. Lot BTC = 0,00001 BTC. Référence : https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals.md
 
@@ -48,9 +48,9 @@ Sources officielles, sauf mention contraire, relevées le 2026-10-12. Chaque fai
 - Formule officielle : `fee = C × feeRate × p × (1 − p)`, C = nombre de parts, p = prix de la part.
 - `feeRate` taker crypto = **0,07** ; `feeRate` maker = **0** (les makers ne sont jamais facturés).
 - Arrondi à 5 décimales ; montants < 0,00001 pUSD ramenés à 0.
-- Rebate maker : 20 % des frais taker, distribué quotidiennement en pUSD (seuil 1 $), réparti au prorata de la « fee equivalent » par marché. Le taux est à la discrétion de Polymarket.
-- Symétrie : 30 ¢ et 70 ¢ ont les mêmes frais en $.
-- Exemple officiel : 100 parts à p = 0,50 → 1,75 $.
+- Rebate maker : 20 % des frais taker, distribué quotidiennement en pUSD (seuil 1 \$), réparti au prorata de la « fee equivalent » par marché. Le taux est à la discrétion de Polymarket.
+- Symétrie : 30 ¢ et 70 ¢ ont les mêmes frais en \$.
+- Exemple officiel : 100 parts à p = 0,50 → 1,75 \$.
 
 **Formule des frais.** Les frais ne se calculent pas à partir de `taker_fee_bps` ni `maker_fee_bps` (bps linéaires). La formule retenue est `fee = shares × 0,07 × p × (1−p)` en taker, `0` en maker. Le champ Gamma `takerBaseFee = 1000` (et `makerBaseFee = 1000`), observé sur un marché, n'est pas expliqué par les pages consultées : il n'est pas utilisé comme taux.
 

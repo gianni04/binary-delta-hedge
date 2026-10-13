@@ -1,4 +1,4 @@
-# Pondération du strip Kalshi KXBTCD-26OCT1117, budget de prime 510 $
+# Pondération du strip Kalshi KXBTCD-26OCT1117, budget de prime 510 \$
 
 Cadre : entrée 2026-10-10 21:00 UTC, $`S_0=82\ 986`$ (HL), $`T=1`$ j $`=1/365`$ an, $`\sigma=0{,}3682`$ (DVOL). Budget de prime $`B=510`$ \$, soit le même capital que le trade à strike unique de référence.
 
