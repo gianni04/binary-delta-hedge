@@ -27,7 +27,7 @@ Sources et dates (consultation 2026-10-12) : support.deribit.com/hc/en-us/articl
 
 ### 2.1 Formules
 
-Kalshi, par ordre de C contrats au prix P (\$, entre 0 et 1) :
+Kalshi, par ordre de C contrats au prix P (&#36;, entre 0 et 1) :
 
 
 ```math
@@ -43,7 +43,7 @@ Par contrat, en % de la prime :
 ```
 
 
-Le frais absolu est maximal en P = 0,5 : 0,0175 \$ par contrat. Le frais relatif est maximal en P → 0 (7 %), et le plafonnement d'arrondi ajoute au plus 1 cent par ordre.
+Le frais absolu est maximal en P = 0,5 : 0,0175 &#36; par contrat. Le frais relatif est maximal en P → 0 (7 %), et le plafonnement d'arrondi ajoute au plus 1 cent par ordre.
 
 Deribit, par patte de quantité q (BTC), prix P_BTC (BTC) :
 
@@ -81,7 +81,7 @@ Aller-retour : Deribit est payé à l'entrée (T0) et à la sortie (T1), car la 
 
 ### 2.2 Chiffres (calculs analytiques, hypothèses explicites)
 
-Hypothèses : r = 0, smile plat, S = 70 000 \$ (illustratif, seul le % compte), T0 = 35 h, T1 = 11 h, σ ∈ {40 %, 55 %}. Précision ±0,2 pt (calcul gaussien analytique).
+Hypothèses : r = 0, smile plat, S = 70 000 &#36; (illustratif, seul le % compte), T0 = 35 h, T1 = 11 h, σ ∈ {40 %, 55 %}. Précision ±0,2 pt (calcul gaussien analytique).
 
 Put ATM journalier, en % de la prime d'entrée :
 
@@ -92,11 +92,11 @@ Put ATM journalier, en % de la prime d'entrée :
 | Prime T1 (% S) | 0,565 | 0,778 |
 | Frais Deribit T1 | 5,31 % | 3,86 % |
 | Deribit aller-retour (% prime T0) | **5,95 %** | **4,33 %** |
-| Kalshi, équivalent ATM (strip de binaires sous K, pas 250 \$), une fois | **4,9 %** | **4,9 %** |
+| Kalshi, équivalent ATM (strip de binaires sous K, pas 250 &#36;), une fois | **4,9 %** | **4,9 %** |
 
-Le 4,9 % Kalshi vient de Σ P_j·0,07·(1−P_j) / Σ P_j sur des binaires au pas de 250 \$. Le ratio ne bouge presque pas avec σ. Les exemples de cette page prennent le pas de 250 \$ des 177 jours à 9 pattes ; sur les 30 jours à 5 pattes, le pas est de 500 \$ et la taille équivalente devient q = n/500.
+Le 4,9 % Kalshi vient de Σ P_j·0,07·(1−P_j) / Σ P_j sur des binaires au pas de 250 &#36;. Le ratio ne bouge presque pas avec σ. Les exemples de cette page prennent le pas de 250 &#36; des 177 jours à 9 pattes ; sur les 30 jours à 5 pattes, le pas est de 500 &#36; et la taille équivalente devient q = n/500.
 
-Put spread ±1 000 \$ (long K+1 125, court K−1 125, pas Deribit ; équivalent au strip Kalshi de 9 pattes) :
+Put spread ±1 000 &#36; (long K+1 125, court K−1 125, pas Deribit ; équivalent au strip Kalshi de 9 pattes) :
 
 | Quantité | σ = 40 % | σ = 55 % |
 |---|---|---|
@@ -108,18 +108,18 @@ Put spread ±1 000 \$ (long K+1 125, court K−1 125, pas Deribit ; équivalent 
 | Kalshi strip 9 pattes, une fois | **3,23 %** | **3,35 %** |
 | Deribit aller-retour, si combo confirmé (0,0003 à l'entrée + 0,0003 à la sortie) | 3,7 % | 3,7 % |
 
-Vérification dimensionnelle, n = 1 par patte : q = n/250 = 0,004 BTC. Kalshi : prime 4,50 \$, frais 0,145 \$ (0,18 \$ si chaque patte est un ordre séparé, arrondi au cent supérieur). Deribit : prime 4,54 \$ (σ40), frais entrée 0,168 \$, frais sortie 0,115 \$.
+Vérification dimensionnelle, n = 1 par patte : q = n/250 = 0,004 BTC. Kalshi : prime 4,50 &#36;, frais 0,145 &#36; (0,18 &#36; si chaque patte est un ordre séparé, arrondi au cent supérieur). Deribit : prime 4,54 &#36; (σ40), frais entrée 0,168 &#36;, frais sortie 0,115 &#36;.
 
 ### 2.3 Où chaque modèle pénalise le plus
 
 - Kalshi : le relatif vaut 0,07(1−P). Il pèse le plus sur les ailes (P → 0 : 7 % et plus avec l'arrondi). L'ATM paie le plus en absolu (1,75 ¢) mais le moins en relatif.
-- Deribit : le relatif vaut min(0,0003/P_BTC ; 12,5 %). Il pèse sur les ailes deux fois plus fort (plafond 12,5 % par patte). Le frais en \$ est identique à tous les strikes (0,0003·S·q), donc les options bon marché sont pénalisées en %.
+- Deribit : le relatif vaut min(0,0003/P_BTC ; 12,5 %). Il pèse sur les ailes deux fois plus fort (plafond 12,5 % par patte). Le frais en &#36; est identique à tous les strikes (0,0003·S·q), donc les options bon marché sont pénalisées en %.
 - Le point faible de Deribit est l'aller-retour. Une option ATM à 40 % coûte 3 % à l'entrée et 5 % à la sortie. La patte courte du spread, presque sans valeur à T1, tombe au plafond.
-- Conclusion chiffrée : en ATM, Deribit à 40 % est plus cher que Kalshi sur l'aller-retour (5,9 % contre 4,9 %). À 55 %, il est moins cher (4,3 % contre 4,9 %). Sur le spread ±1 000 \$, Deribit coûte environ 2 fois plus que Kalshi (6,2-7,2 % contre 3,2-3,4 %), sauf si la règle combo se confirme (3,7 %, à égalité).
+- Conclusion chiffrée : en ATM, Deribit à 40 % est plus cher que Kalshi sur l'aller-retour (5,9 % contre 4,9 %). À 55 %, il est moins cher (4,3 % contre 4,9 %). Sur le spread ±1 000 &#36;, Deribit coûte environ 2 fois plus que Kalshi (6,2-7,2 % contre 3,2-3,4 %), sauf si la règle combo se confirme (3,7 %, à égalité).
 
 ### 2.4 Gamma en escalier et gamma continu
 
-- Kalshi : le strip est une somme de binaires. Le delta saute de n/250 à chaque strike (9 marches). Le gamma est concentré sur 9 points, et l'erreur de couverture est bornée par le pas de 250 \$.
+- Kalshi : le strip est une somme de binaires. Le delta saute de n/250 à chaque strike (9 marches). Le gamma est concentré sur 9 points, et l'erreur de couverture est bornée par le pas de 250 &#36;.
 - Deribit : une option vanille ou un spread à 2 strikes a un delta continu par morceaux. Le gamma est lisse et maximal près des strikes, sans marche.
 
 ## 3. Raccordement des échéances

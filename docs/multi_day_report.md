@@ -1,8 +1,8 @@
 # Validation multi-jours : strike unique contre binary strip
 
-207 échéances journalières KXBTCD (2026-03-19 → 2026-10-11), 2 structures × 2 sources de σ. PnL en \$ par échéance, net de frais Kalshi, frais Hyperliquid et funding. Bootstrap : 10000 tirages, graine 20261012. Test apparié sur le même jour et la même σ.
+207 échéances journalières KXBTCD (2026-03-19 → 2026-10-11), 2 structures × 2 sources de σ. PnL en &#36; par échéance, net de frais Kalshi, frais Hyperliquid et funding. Bootstrap : 10000 tirages, graine 20261012. Test apparié sur le même jour et la même σ.
 
-Jours extrêmes (|S1/S0 − 1| > 5 %) : 2026-06-02 (5,4 %), 2026-08-19 (6,9 %), 2026-08-20 (5,2 %), 2026-08-21 (6,7 %), 2026-09-03 (5,2 %), 2026-09-18 (6,0 %), 2026-09-21 (7,3 %). Jours au pas de 250 \$ (9 pattes) : 177 sur 207.
+Jours extrêmes (|S1/S0 − 1| > 5 %) : 2026-06-02 (5,4 %), 2026-08-19 (6,9 %), 2026-08-20 (5,2 %), 2026-08-21 (6,7 %), 2026-09-03 (5,2 %), 2026-09-18 (6,0 %), 2026-09-21 (7,3 %). Jours au pas de 250 &#36; (9 pattes) : 177 sur 207.
 
 ## Statistiques par combinaison (total_pnl)
 
