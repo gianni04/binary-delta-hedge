@@ -34,7 +34,7 @@ La question : combien coûte, en frictions, la neutralité delta d'une binaire �
 
 Binaire cash-or-nothing de payoff 1 $, taux nul (le perp est marginé en USDC), temps en années sur une base 24/7.
 
-$$V = N(d_2), \qquad \Delta = \frac{\varphi(d_2)}{S\,\sigma\sqrt T}, \qquad h = -\,Q\,\Delta \ \text{BTC}$$
+$$V = N(d_2), \qquad \Delta = \frac{\varphi(d_2)}{S\ \sigma\sqrt T}, \qquad h = -\ Q\ \Delta \ \text{BTC}$$
 
 avec $d_2 = \dfrac{\ln(S/K) - \tfrac12\sigma^2 T}{\sigma\sqrt T}$. Δ et Γ sont vérifiés contre des différences finies centrées sur 16 605 points (erreur relative max $5\cdot10^{-4}$ pour Δ), voir [docs/math_review.md](docs/math_review.md).
 
@@ -74,7 +74,7 @@ Au seuil minimal, couvrir avec la DVOL plutôt qu'avec la σ implicite coûte 4,
 
 ### Pourquoi la dynamique perd
 
-Les frais. Un rebalancement taker paie 4,5 bp du notionnel, plus le demi-spread. À la monnaie, le notionnel de la couverture vaut $|h|\,S = Q\,\varphi(d_2)/(\sigma\sqrt T)$. Il ne dépend pas de S et croît en $T^{-1/2}$ :
+Les frais. Un rebalancement taker paie 4,5 bp du notionnel, plus le demi-spread. À la monnaie, le notionnel de la couverture vaut $|h|\ S = Q\ \varphi(d_2)/(\sigma\sqrt T)$. Il ne dépend pas de S et croît en $T^{-1/2}$ :
 
 | T restant | Δ par part | Couverture | Notionnel |
 |---|---|---|---|
@@ -84,7 +84,7 @@ Les frais. Un rebalancement taker paie 4,5 bp du notionnel, plus le demi-spread.
 
 On couvre donc 30 à 100 fois le payoff maximal (1 000 $) pour protéger une prime de 356 $. Chaque aller-retour taker coûte quelques dollars, et le seuil minimal en déclenche des centaines par heure.
 
-Le gamma. Il vaut $\Gamma = -\varphi(d_2)\,d_1 / (S^2\sigma^2 T)$, diverge en $1/T$ près du strike et change de signe quand S traverse K. Près de l'échéance, un mouvement de quelques dizaines de dollars inverse la couverture : on achète en haut, on vend en bas, et on paie le spread dans les deux sens. D'où le kill-switch, qui clôture tout et annule les ordres 2 h avant l'échéance.
+Le gamma. Il vaut $\Gamma = -\varphi(d_2)\ d_1 / (S^2\sigma^2 T)$, diverge en $1/T$ près du strike et change de signe quand S traverse K. Près de l'échéance, un mouvement de quelques dizaines de dollars inverse la couverture : on achète en haut, on vend en bas, et on paie le spread dans les deux sens. D'où le kill-switch, qui clôture tout et annule les ordres 2 h avant l'échéance.
 
 Le theta et le vega ne se couvrent pas en delta. Sur la fenêtre, la jambe Polymarket perd 141 $ et la couverture n'en récupère que 78 à 82 $. Le reste vient du spread et des frais d'entrée, du theta d'une binaire hors de la monnaie, et de la baisse de la σ implicite (0,33 → 0,28).
 
@@ -127,11 +127,11 @@ Ouverture le 10/10/2026 à 17:00 EDT d'un long NO sur `KXBTCD-26OCT1117` (« BTC
 
 ### Pourquoi un strip
 
-Une binaire NO est la dérivée d'un put par rapport au strike : $(K-S_T)^+ = \int_0^{K} \mathbf 1\{S_T<k\}\,dk$ (Breeden & Litzenberger, 1978 ; Carr & Madan, 1998). Un strip de n NO par strike, sur une grille de pas ΔK, réplique donc un put spread à n/ΔK unités. Son delta tend vers
+Une binaire NO est la dérivée d'un put par rapport au strike : $(K-S_T)^+ = \int_0^{K} \mathbf 1\lbrace S_T<k\rbrace \ dk$ (Breeden & Litzenberger, 1978 ; Carr & Madan, 1998). Un strip de n NO par strike, sur une grille de pas ΔK, réplique donc un put spread à n/ΔK unités. Son delta tend vers
 
-$$\Delta_{\text{strip}} \xrightarrow{\;\Delta K\to 0\;} \frac{n}{\Delta K}\Big[N\big(d_1(K_{\max})\big) - N\big(d_1(K_{\min})\big)\Big] < 0,$$
+$$\Delta_{\text{strip}} \xrightarrow{\ \Delta K\to 0\ } \frac{n}{\Delta K}\Big[N\big(d_1(K_{\max})\big) - N\big(d_1(K_{\min})\big)\Big] < 0,$$
 
-et son gamma est borné par $0{,}4\,n/(\Delta K\,S\sigma\sqrt T)$, au lieu de diverger en $1/T$ sur un strike unique. La pondération uniforme en ΔK est celle de la réplication. Une pondération gaussienne centrée sur le spot ne modifie les tailles que de 10 à 17 % et n'apporte rien. Détail dans [docs/strip_research_replication.md](docs/strip_research_replication.md) et [docs/strip_research_weights.md](docs/strip_research_weights.md).
+et son gamma est borné par $0{,}4\ n/(\Delta K\ S\sigma\sqrt T)$, au lieu de diverger en $1/T$ sur un strike unique. La pondération uniforme en ΔK est celle de la réplication. Une pondération gaussienne centrée sur le spot ne modifie les tailles que de 10 à 17 % et n'apporte rien. Détail dans [docs/strip_research_replication.md](docs/strip_research_replication.md) et [docs/strip_research_weights.md](docs/strip_research_weights.md).
 
 ### Résultats
 

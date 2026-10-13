@@ -1,6 +1,6 @@
 # Pondération du strip Kalshi KXBTCD-26OCT1117, budget de prime 510 $
 
-Cadre : entrée 2026-10-10 21:00 UTC, $S_0=82\,986$ (HL), $T=1$ j $=1/365$ an, $\sigma=0{,}3682$ (DVOL). Budget de prime $B=510$ \$, soit le même capital que le trade à strike unique de référence.
+Cadre : entrée 2026-10-10 21:00 UTC, $S_0=82\ 986$ (HL), $T=1$ j $=1/365$ an, $\sigma=0{,}3682$ (DVOL). Budget de prime $B=510$ \$, soit le même capital que le trade à strike unique de référence.
 
 ## 1. Données de marché (bougies 1 min, `end_period_ts = 1791666000`)
 
@@ -24,17 +24,17 @@ Le strike KXBTCD-26OCT1117-T84249.99 est exclu : aucune bougie à 21:00 (derniè
 
 ## 2. Schémas de poids
 
-Nombre de contrats par strike $n_i = w_i\,n$, avec $n$ fixé par la contrainte de budget :
-$$\sum_i w_i\,p_i\,n = B \quad\Rightarrow\quad n_i=\mathrm{round}\!\left(\frac{B\,w_i}{\sum_j w_j p_j}\right)$$
+Nombre de contrats par strike $n_i = w_i\ n$, avec $n$ fixé par la contrainte de budget :
+$$\sum_i w_i\ p_i\ n = B \quad\Rightarrow\quad n_i=\mathrm{round}\!\left(\frac{B\ w_i}{\sum_j w_j p_j}\right)$$
 
-- **(a) Uniforme / $\Delta K$.** $w_i=\Delta K_i/\Delta K$ ; grille régulière donc $w_i=1$. Réplication Carr-Madan : $\sum_i \Delta K\,\mathrm{NO}(K_i)$ approxime $\int \mathbf 1\{S_T<K\}\,dK$, soit un put spread.
-- **(b) Gaussien.** $w_i=\varphi\!\big((K_i-S_0)/(S_0\sigma\sqrt T)\big)$, avec $S_0\sigma\sqrt T=1\,599{,}35$. Sur N = 9, les poids restent entre 0,33 et 0,40 : quasi uniforme, il ne fait que retirer 10 à 17 % aux ailes.
+- **(a) Uniforme / $\Delta K$.** $w_i=\Delta K_i/\Delta K$ ; grille régulière donc $w_i=1$. Réplication Carr-Madan : $\sum_i \Delta K\ \mathrm{NO}(K_i)$ approxime $\int \mathbf 1\lbrace S_T<K\rbrace \ dK$, soit un put spread.
+- **(b) Gaussien.** $w_i=\varphi\!\big((K_i-S_0)/(S_0\sigma\sqrt T)\big)$, avec $S_0\sigma\sqrt T=1\ 599{,}35$. Sur N = 9, les poids restent entre 0,33 et 0,40 : quasi uniforme, il ne fait que retirer 10 à 17 % aux ailes.
 
 Grecques NO (par contrat, $d_2$ de `core/math_engine.py`, $r=0$) :
-$$\Delta_{NO}(K)=-\frac{\varphi(d_2)}{S\sigma\sqrt T},\qquad \Gamma_{NO}(K)=+\frac{\varphi(d_2)\,(d_2+\sigma\sqrt T)}{S^2\sigma^2 T}$$
-Vérification : $\Delta_{NO}(82\,999{,}99)=-0{,}00024940$, identique à `delta_no_per_contract` de `result.json`.
+$$\Delta_{NO}(K)=-\frac{\varphi(d_2)}{S\sigma\sqrt T},\qquad \Gamma_{NO}(K)=+\frac{\varphi(d_2)\ (d_2+\sigma\sqrt T)}{S^2\sigma^2 T}$$
+Vérification : $\Delta_{NO}(82\ 999{,}99)=-0{,}00024940$, identique à `delta_no_per_contract` de `result.json`.
 
-Frais par patte : $f_i=\lceil 0{,}07\,n_i\,p_i(1-p_i)\rceil_{\text{cent}}$ (arrondi par patte). Trade de référence à strike unique : $f=17{,}50$ \$.
+Frais par patte : $f_i=\lceil 0{,}07\ n_i\ p_i(1-p_i)\rceil_{\text{cent}}$ (arrondi par patte). Trade de référence à strike unique : $f=17{,}50$ \$.
 
 ## 3. Résultats (prime totale, frais, couverture, gamma)
 
@@ -46,7 +46,7 @@ Frais par patte : $f_i=\lceil 0{,}07\,n_i\,p_i(1-p_i)\rceil_{\text{cent}}$ (arro
 | **(a)** | **9** | **81 999,99…83 999,99** | **113** | **510,76** | **12,94** | **−0,234405** | **0,23440** | **6,97e-07** | **6,59e-05 (ratio 0,82)** | **5,30e-04 (ratio 0,23)** |
 | (b) | 9 | idem | 100–122 | 509,35 | 13,20 | −0,235566 | 0,23557 | 8,59e-07 | 6,68e-05 (ratio 0,83) | 5,36e-04 (ratio 0,24) |
 
-Gamma max recherché sur $S\in[82\,000;84\,000]$, pas 5 \$. Pour le strip : $\Gamma_\text{total}=\sum_i n_i\Gamma_{NO}(K_i)$.
+Gamma max recherché sur $S\in[82\ 000;84\ 000]$, pas 5 \$. Pour le strip : $\Gamma_\text{total}=\sum_i n_i\Gamma_{NO}(K_i)$.
 
 Détail du schéma retenu (a), N = 9 :
 
@@ -65,7 +65,7 @@ Détail du schéma retenu (a), N = 9 :
 
 ## 4. Recommandation
 
-**Schéma (a), uniforme en $\Delta K$, N = 9, strikes symétriques autour de $K_{ATM}=82\,999{,}99$ (strike le plus proche de $S_0$, à 14 \$) : $K_k=K_{ATM}+k\cdot250$, $k\in\{-4,\dots,4\}$.**
+**Schéma (a), uniforme en $\Delta K$, N = 9, strikes symétriques autour de $K_{ATM}=82\ 999{,}99$ (strike le plus proche de $S_0$, à 14 \$) : $K_k=K_{ATM}+k\cdot250$, $k\in\{-4,\dots,4\}$.**
 
 Formule finale : $n_i = \mathrm{round}\!\big(B/\sum_j p_j\big) = \mathrm{round}(510/4{,}52)=113$ contrats par strike.
 
@@ -75,17 +75,17 @@ Justification :
 3. **Frais.** 12,94 \$ contre 17,50 \$ : les frais sont proportionnels à $p(1-p)$ par patte, et la prime se répartit sur des strikes à faible $p$.
 4. **Budget.** 510,76 \$ de prime, soit +0,76 \$ (arrondi entier). Une troncature à 112 contrats donnerait 506,24 \$ ; l'arrondi reste conforme à la règle.
 
-Alternative écartée : N = 7 (a). Le gamma à T = 1 h est moins bien lissé (ratio 0,33 contre 0,23 pour N = 9), le domaine $[82\,000;84\,000]$ est couvert plus étroitement et les frais sont plus élevés (14,50 \$).
+Alternative écartée : N = 7 (a). Le gamma à T = 1 h est moins bien lissé (ratio 0,33 contre 0,23 pour N = 9), le domaine $[82\ 000;84\ 000]$ est couvert plus étroitement et les frais sont plus élevés (14,50 \$).
 
 ## 5. Couverture
 
-$$h_\text{perp} = -\Delta_\text{total} = -\sum_i n_i\,\Delta_{NO}(K_i) = 0{,}23440\ \text{BTC (long perp, arrondi } 10^{-5}\text{)}$$
+$$h_\text{perp} = -\Delta_\text{total} = -\sum_i n_i\ \Delta_{NO}(K_i) = 0{,}23440\ \text{BTC (long perp, arrondi } 10^{-5}\text{)}$$
 
 Couverture statique à l'entrée, sans rebalancement. Référence à strike unique : $h=0{,}24940$ BTC (`result.json` : 0,2494).
 
 ## 6. Payoff à l'échéance (avant frais, hedge statique)
 
-PnL Kalshi = $\sum_i n_i(\mathbf 1\{S_T<K_i\}-p_i)$. PnL perp = $h\,(S_T-S_0)$.
+PnL Kalshi = $\sum_i n_i(\mathbf 1\lbrace S_T<K_i\rbrace -p_i)$. PnL perp = $h\ (S_T-S_0)$.
 
 | $S_T$ | Strike unique non couvert | Strike unique couvert | Strip non couvert | Strip couvert (a, N=9) |
 |---|---|---|---|---|
@@ -109,4 +109,4 @@ Hors de ce tableau : frais Kalshi (≈ 13 \$ pour le strip, contre 17,50 \$ pour
 
 ## 8. Reproduction
 
-Les données viennent de `data/kalshi_one_trade/event.json` (strikes) et de la requête de bougies de la section 1. Les poids, $n_i$, frais, $\Delta$, $\Gamma$, $\max|\Gamma|$ sur $[82\,000;84\,000]$ et payoffs se recalculent à partir des formules des sections 2 à 6.
+Les données viennent de `data/kalshi_one_trade/event.json` (strikes) et de la requête de bougies de la section 1. Les poids, $n_i$, frais, $\Delta$, $\Gamma$, $\max|\Gamma|$ sur $[82\ 000;84\ 000]$ et payoffs se recalculent à partir des formules des sections 2 à 6.

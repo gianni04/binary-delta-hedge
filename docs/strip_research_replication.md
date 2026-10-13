@@ -6,51 +6,51 @@ Note théorique sur la réplication statique d'un put spread par des NO Kalshi. 
 
 Identité, pour tout $S\ge 0$ :
 
-$$(K-S)^+=\int_0^K \mathbf{1}\{S<k\}\,dk \tag{1}$$
+$$(K-S)^+=\int_0^K \mathbf{1}\lbrace S<k\rbrace \ dk \tag{1}$$
 
 Si $S<K$, l'intégrande vaut 1 sur $(S,K)$ et l'intégrale vaut $K-S$. Si $S\ge K$, l'intégrande est nulle sur $(0,K)$.
 
-Le NO au strike $k$ paie $\mathbf{1}\{S_T<k\}$. Son prix sous Black-Scholes est :
+Le NO au strike $k$ paie $\mathbf{1}\lbrace S_T<k\rbrace $. Son prix sous Black-Scholes est :
 
 $$\text{NO}(k)=N(-d_2(k)),\qquad d_2(k)=\frac{\ln(S/k)-\sigma^2T/2}{\sigma\sqrt T} \tag{2}$$
 
 Pour un put spread sur $[K_{\min},K_{\max}]$, (1) donne :
 
-$$(K_{\max}-S)^+-(K_{\min}-S)^+=\int_{K_{\min}}^{K_{\max}}\mathbf{1}\{S<k\}\,dk \tag{3}$$
+$$(K_{\max}-S)^+-(K_{\min}-S)^+=\int_{K_{\min}}^{K_{\max}}\mathbf{1}\lbrace S<k\rbrace \ dk \tag{3}$$
 
-Strip : grille $K_i=K_{\min}+i\,\Delta K$, $i=0,\dots,M$, avec $M=(K_{\max}-K_{\min})/\Delta K$. On détient $n_i=Q\,\Delta K$ contrats NO au strike $K_i$ :
+Strip : grille $K_i=K_{\min}+i\ \Delta K$, $i=0,\dots,M$, avec $M=(K_{\max}-K_{\min})/\Delta K$. On détient $n_i=Q\ \Delta K$ contrats NO au strike $K_i$ :
 
-$$\Pi_{\text{strip}}(S)=\sum_{i=0}^{M} Q\,\Delta K\;\mathbf{1}\{S<K_i\}\;\approx\;Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big] \tag{4}$$
+$$\Pi_{\text{strip}}(S)=\sum_{i=0}^{M} Q\ \Delta K\ \mathbf{1}\lbrace S<K_i\rbrace \ \approx\ Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big] \tag{4}$$
 
-Prix juste, avec $r=0$ : $\sum_i Q\,\Delta K\,N(-d_2(K_i))\approx Q\,[P(K_{\max})-P(K_{\min})]$, où $P$ est le put Black-Scholes.
+Prix juste, avec $r=0$ : $\sum_i Q\ \Delta K\ N(-d_2(K_i))\approx Q\ [P(K_{\max})-P(K_{\min})]$, où $P$ est le put Black-Scholes.
 
-**Erreur de discrétisation.** Pour un $S$ fixé, $k\mapsto\mathbf{1}\{S<k\}$ est monotone et bornée par 1. La somme de Riemann à pas $\Delta K$ diffère donc de l'intégrale d'au plus une cellule. Par scénario :
+**Erreur de discrétisation.** Pour un $S$ fixé, $k\mapsto\mathbf{1}\lbrace S<k\rbrace $ est monotone et bornée par 1. La somme de Riemann à pas $\Delta K$ diffère donc de l'intégrale d'au plus une cellule. Par scénario :
 
-$$\Big|\Pi_{\text{strip}}(S)-Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big]\Big|\le Q\,\Delta K \tag{5}$$
+$$\Big|\Pi_{\text{strip}}(S)-Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big]\Big|\le Q\ \Delta K \tag{5}$$
 
 L'erreur est nulle si $S$ tombe exactement sur la grille (à la convention de bord près). Elle est bornée par $\Delta K$ par unité de $Q$, et non par $\Delta K$ multiplié par le nombre de strikes.
 
 **Troncature : on réplique un put spread, pas un put.** Avec $W=K_{\max}-K_{\min}$ :
 
-- Si $S\le K_{\min}$ : $\Pi=Q\,W$ (constante, pas de protection supplémentaire).
-- Si $K_{\min}<S<K_{\max}$ : $\Pi=Q\,(K_{\max}-S)$.
+- Si $S\le K_{\min}$ : $\Pi=Q\ W$ (constante, pas de protection supplémentaire).
+- Si $K_{\min}<S<K_{\max}$ : $\Pi=Q\ (K_{\max}-S)$.
 - Si $S\ge K_{\max}$ : $\Pi=0$.
 
-Le payoff est borné dans $[0,QW]$. Un put vanilla exigerait $K_{\min}\to 0$, donc une grille couvrant tout le bas de la distribution, ce que Kalshi ne liste pas. Avec $K_{\min}>0$, l'écart par rapport à un put vanilla vaut $Q\,(K_{\min}-S)^+\le Q\,K_{\min}$, et il tombe dans la queue basse.
+Le payoff est borné dans $[0,QW]$. Un put vanilla exigerait $K_{\min}\to 0$, donc une grille couvrant tout le bas de la distribution, ce que Kalshi ne liste pas. Avec $K_{\min}>0$, l'écart par rapport à un put vanilla vaut $Q\ (K_{\min}-S)^+\le Q\ K_{\min}$, et il tombe dans la queue basse.
 
 ## 2. Binaire, call spread, gamma
 
 Avec $r=0$, la parité put-call $C-P=S-K$ donne $P(K+\varepsilon)-P(K)=C(K+\varepsilon)-C(K)+\varepsilon$. D'où :
 
-$$\text{YES}(K)=\mathbf{1}\{S>K\}=\lim_{\varepsilon\to 0}\frac{C(K)-C(K+\varepsilon)}{\varepsilon},\qquad \text{NO}=1-\text{YES} \tag{6}$$
+$$\text{YES}(K)=\mathbf{1}\lbrace S>K\rbrace =\lim_{\varepsilon\to 0}\frac{C(K)-C(K+\varepsilon)}{\varepsilon},\qquad \text{NO}=1-\text{YES} \tag{6}$$
 
 Un YES est donc un call spread long, de largeur $\varepsilon$, pondéré par $1/\varepsilon$ (Hull, Taleb). Un NO est un put spread du même type, comme en (3).
 
-Identité utile, avec $r=0$ : $S\,\varphi(d_1)=K\,\varphi(d_2)$. Elle découle de $d_1+d_2=2\ln(S/K)/(\sigma\sqrt T)$.
+Identité utile, avec $r=0$ : $S\ \varphi(d_1)=K\ \varphi(d_2)$. Elle découle de $d_1+d_2=2\ln(S/K)/(\sigma\sqrt T)$.
 
 Gamma de $\text{YES}$, tel que codé dans `math_engine.py` :
 
-$$\Gamma_{\text{YES}}=-\frac{\varphi(d_2)\,d_1}{S^2\sigma^2T}=-\frac{d_1\varphi(d_1)}{K S\sigma^2T}$$
+$$\Gamma_{\text{YES}}=-\frac{\varphi(d_2)\ d_1}{S^2\sigma^2T}=-\frac{d_1\varphi(d_1)}{K S\sigma^2T}$$
 
 Le signe est inversé pour le NO : $\Gamma_{\text{NO}}=+\varphi(d_2)d_1/(S^2\sigma^2T)$. Le gamma du binaire unique est en $1/(S^2\sigma^2T)$. Près du strike quand $T\to 0$, il diverge en $1/T$.
 
@@ -58,7 +58,7 @@ Gamma du strip, obtenu à partir de (3) et de la section 3 :
 
 $$\Gamma_{\text{strip}}=\frac{Q}{S\sigma\sqrt T}\big[\varphi(d_1(K_{\max}))-\varphi(d_1(K_{\min}))\big]$$
 
-C'est exactement le gamma d'un put spread vanilla, multiplié par $Q$. Il est borné : $|\Gamma_{\text{strip}}|\le 0{,}4\,Q/(S\sigma\sqrt T)$. Il ne diverge qu'en $1/\sqrt T$, comme un vanilla, et il est étalé sur la grille au lieu de se concentrer sur un strike.
+C'est exactement le gamma d'un put spread vanilla, multiplié par $Q$. Il est borné : $|\Gamma_{\text{strip}}|\le 0{,}4\ Q/(S\sigma\sqrt T)$. Il ne diverge qu'en $1/\sqrt T$, comme un vanilla, et il est étalé sur la grille au lieu de se concentrer sur un strike.
 
 ## 3. Delta
 
@@ -66,19 +66,19 @@ Par contrat : $\Delta_{\text{NO}}(K)=-\varphi(d_2(K))/(S\sigma\sqrt T)$.
 
 Strip :
 
-$$\Delta_{\text{total}}=\sum_i n_i\,\Delta_{\text{NO}}(K_i)=-Q\,\Delta K\sum_i\frac{\varphi(d_2(K_i))}{S\sigma\sqrt T}$$
+$$\Delta_{\text{total}}=\sum_i n_i\ \Delta_{\text{NO}}(K_i)=-Q\ \Delta K\sum_i\frac{\varphi(d_2(K_i))}{S\sigma\sqrt T}$$
 
 Limite continue quand $\Delta K\to 0$ :
 
-$$\Delta_{\text{total}}\to -Q\int_{K_{\min}}^{K_{\max}}\frac{\varphi(d_2(k))}{S\sigma\sqrt T}\,dk$$
+$$\Delta_{\text{total}}\to -Q\int_{K_{\min}}^{K_{\max}}\frac{\varphi(d_2(k))}{S\sigma\sqrt T}\ dk$$
 
 Avec $\partial d_1/\partial k=-1/(k\sigma\sqrt T)$ et $\varphi(d_2)=(S/k)\varphi(d_1)$ :
 
-$$\int_{K_{\min}}^{K_{\max}}\frac{\varphi(d_2(k))}{S\sigma\sqrt T}\,dk=\int_{d_1(K_{\max})}^{d_1(K_{\min})}\varphi(v)\,dv=N(d_1(K_{\min}))-N(d_1(K_{\max}))$$
+$$\int_{K_{\min}}^{K_{\max}}\frac{\varphi(d_2(k))}{S\sigma\sqrt T}\ dk=\int_{d_1(K_{\max})}^{d_1(K_{\min})}\varphi(v)\ dv=N(d_1(K_{\min}))-N(d_1(K_{\max}))$$
 
 Donc :
 
-$$\boxed{\;\Delta_{\text{total}}\to Q\big[N(d_1(K_{\max}))-N(d_1(K_{\min}))\big]\;}$$
+$$\boxed{\ \Delta_{\text{total}}\to Q\big[N(d_1(K_{\max}))-N(d_1(K_{\min}))\big]\ }$$
 
 Vérification : le delta BS d'un put est $-N(-d_1)=N(d_1)-1$. Le delta du put spread long $P(K_{\max})-P(K_{\min})$ est donc $N(d_1(K_{\max}))-N(d_1(K_{\min}))$. Il coïncide avec la limite ci-dessus.
 

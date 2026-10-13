@@ -29,21 +29,21 @@ Sources et dates (consultation 2026-10-12) : support.deribit.com/hc/en-us/articl
 
 Kalshi, par ordre de C contrats au prix P ($, entre 0 et 1) :
 
-$$F_K = \lceil 0{,}07\,C\,P(1-P) \rceil \ \text{cents}$$
+$$F_K = \lceil 0{,}07\ C\ P(1-P) \rceil \ \text{cents}$$
 
 Par contrat, en % de la prime :
 
-$$\frac{F_K}{C\,P} = 0{,}07\,(1-P)$$
+$$\frac{F_K}{C\ P} = 0{,}07\ (1-P)$$
 
 Le frais absolu est maximal en P = 0,5 : 0,0175 $ par contrat. Le frais relatif est maximal en P → 0 (7 %), et le plafonnement d'arrondi ajoute au plus 1 cent par ordre.
 
 Deribit, par patte de quantité q (BTC), prix P_BTC (BTC) :
 
-$$F_D = q\cdot\min\bigl(0{,}0003\ \text{BTC};\ 0{,}125\,P_{BTC}\bigr)\cdot S$$
+$$F_D = q\cdot\min\bigl(0{,}0003\ \text{BTC};\ 0{,}125\ P_{BTC}\bigr)\cdot S$$
 
 Frais relatif :
 
-$$\frac{F_D}{q\,P_{BTC}\,S} = \min\!\Bigl(\frac{0{,}0003}{P_{BTC}};\ 0{,}125\Bigr)$$
+$$\frac{F_D}{q\ P_{BTC}\ S} = \min\!\Bigl(\frac{0{,}0003}{P_{BTC}};\ 0{,}125\Bigr)$$
 
 Le régime à frais fixes (0,03 %) s'applique tant que P_BTC > 0,0024 BTC. Pour un put ATM en Black (r = 0), P_BTC ≈ 0,3989·σ√τ, donc :
 
