@@ -131,11 +131,11 @@ Ouverture le 10/10/2026 à 17:00 EDT d'un long NO sur `KXBTCD-26OCT1117` (« BTC
 
 ### Pourquoi un strip
 
-Une binaire NO est la dérivée d'un put par rapport au strike : $`(K-S_T)^+ = \int_0^{K} \mathbf 1\lbrace S_T<k\rbrace \ dk`$ (Breeden & Litzenberger, 1978 ; Carr & Madan, 1998). Un strip de n NO par strike, sur une grille de pas ΔK, réplique donc un put spread à n/ΔK unités. Son delta tend vers
+Une binaire NO est la dérivée d'un put par rapport au strike : $`(K-S_T)^+ = \int_0^{K} \mathbf 1\lbrace S_T\lt k\rbrace \ dk`$ (Breeden & Litzenberger, 1978 ; Carr & Madan, 1998). Un strip de n NO par strike, sur une grille de pas ΔK, réplique donc un put spread à n/ΔK unités. Son delta tend vers
 
 
 ```math
-\Delta_{\text{strip}} \xrightarrow{\ \Delta K\to 0\ } \frac{n}{\Delta K}\Big[N\big(d_1(K_{\max})\big) - N\big(d_1(K_{\min})\big)\Big] < 0,
+\Delta_{\text{strip}} \xrightarrow{\ \Delta K\to 0\ } \frac{n}{\Delta K}\Big[N\big(d_1(K_{\max})\big) - N\big(d_1(K_{\min})\big)\Big] \lt  0,
 ```
 
 

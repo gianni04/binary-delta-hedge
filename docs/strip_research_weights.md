@@ -31,7 +31,7 @@ Nombre de contrats par strike $`n_i = w_i\ n`$, avec $`n`$ fixé par la contrain
 ```
 
 
-- **(a) Uniforme / $`\Delta K`$.** $`w_i=\Delta K_i/\Delta K`$ ; grille régulière donc $`w_i=1`$. Réplication Carr-Madan : $`\sum_i \Delta K\ \mathrm{NO}(K_i)`$ approxime $`\int \mathbf 1\lbrace S_T<K\rbrace \ dK`$, soit un put spread.
+- **(a) Uniforme / $`\Delta K`$.** $`w_i=\Delta K_i/\Delta K`$ ; grille régulière donc $`w_i=1`$. Réplication Carr-Madan : $`\sum_i \Delta K\ \mathrm{NO}(K_i)`$ approxime $`\int \mathbf 1\lbrace S_T\lt K\rbrace \ dK`$, soit un put spread.
 - **(b) Gaussien.** $`w_i=\varphi\!\big((K_i-S_0)/(S_0\sigma\sqrt T)\big)`$, avec $`S_0\sigma\sqrt T=1\ 599{,}35`$. Sur N = 9, les poids restent entre 0,33 et 0,40 : quasi uniforme, il ne fait que retirer 10 à 17 % aux ailes.
 
 Grecques NO (par contrat, $`d_2`$ de `core/math_engine.py`, $`r=0`$) :
@@ -97,7 +97,7 @@ Couverture statique à l'entrée, sans rebalancement. Référence à strike uniq
 
 ## 6. Payoff à l'échéance (avant frais, hedge statique)
 
-PnL Kalshi = $`\sum_i n_i(\mathbf 1\lbrace S_T<K_i\rbrace -p_i)`$. PnL perp = $`h\ (S_T-S_0)`$.
+PnL Kalshi = $`\sum_i n_i(\mathbf 1\lbrace S_T\lt K_i\rbrace -p_i)`$. PnL perp = $`h\ (S_T-S_0)`$.
 
 | $`S_T`$ | Strike unique non couvert | Strike unique couvert | Strip non couvert | Strip couvert (a, N=9) |
 |---|---|---|---|---|

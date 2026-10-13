@@ -8,17 +8,17 @@ Identité, pour tout $`S\ge 0`$ :
 
 
 ```math
-(K-S)^+=\int_0^K \mathbf{1}\lbrace S<k\rbrace \ dk \tag{1}
+(K-S)^+=\int_0^K \mathbf{1}\lbrace S\lt k\rbrace \ dk \qquad(1)
 ```
 
 
-Si $`S<K`$, l'intégrande vaut 1 sur $`(S,K)`$ et l'intégrale vaut $`K-S`$. Si $`S\ge K`$, l'intégrande est nulle sur $`(0,K)`$.
+Si $`S\lt K`$, l'intégrande vaut 1 sur $`(S,K)`$ et l'intégrale vaut $`K-S`$. Si $`S\ge K`$, l'intégrande est nulle sur $`(0,K)`$.
 
-Le NO au strike $`k`$ paie $\mathbf{1}\lbrace S_T<k\rbrace $. Son prix sous Black-Scholes est :
+Le NO au strike $`k`$ paie $`\mathbf{1}\lbrace S_T\lt k\rbrace`$. Son prix sous Black-Scholes est :
 
 
 ```math
-\text{NO}(k)=N(-d_2(k)),\qquad d_2(k)=\frac{\ln(S/k)-\sigma^2T/2}{\sigma\sqrt T} \tag{2}
+\text{NO}(k)=N(-d_2(k)),\qquad d_2(k)=\frac{\ln(S/k)-\sigma^2T/2}{\sigma\sqrt T} \qquad(2)
 ```
 
 
@@ -26,7 +26,7 @@ Pour un put spread sur $`[K_{\min},K_{\max}]`$, (1) donne :
 
 
 ```math
-(K_{\max}-S)^+-(K_{\min}-S)^+=\int_{K_{\min}}^{K_{\max}}\mathbf{1}\lbrace S<k\rbrace \ dk \tag{3}
+(K_{\max}-S)^+-(K_{\min}-S)^+=\int_{K_{\min}}^{K_{\max}}\mathbf{1}\lbrace S\lt k\rbrace \ dk \qquad(3)
 ```
 
 
@@ -34,17 +34,17 @@ Strip : grille $`K_i=K_{\min}+i\ \Delta K`$, $`i=0,\dots,M`$, avec $`M=(K_{\max}
 
 
 ```math
-\Pi_{\text{strip}}(S)=\sum_{i=0}^{M} Q\ \Delta K\ \mathbf{1}\lbrace S<K_i\rbrace \ \approx\ Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big] \tag{4}
+\Pi_{\text{strip}}(S)=\sum_{i=0}^{M} Q\ \Delta K\ \mathbf{1}\lbrace S\lt K_i\rbrace \ \approx\ Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big] \qquad(4)
 ```
 
 
 Prix juste, avec $`r=0`$ : $`\sum_i Q\ \Delta K\ N(-d_2(K_i))\approx Q\ [P(K_{\max})-P(K_{\min})]`$, où $`P`$ est le put Black-Scholes.
 
-**Erreur de discrétisation.** Pour un $`S`$ fixé, $k\mapsto\mathbf{1}\lbrace S<k\rbrace $ est monotone et bornée par 1. La somme de Riemann à pas $`\Delta K`$ diffère donc de l'intégrale d'au plus une cellule. Par scénario :
+**Erreur de discrétisation.** Pour un $`S`$ fixé, $`k\mapsto\mathbf{1}\lbrace S\lt k\rbrace`$ est monotone et bornée par 1. La somme de Riemann à pas $`\Delta K`$ diffère donc de l'intégrale d'au plus une cellule. Par scénario :
 
 
 ```math
-\Big|\Pi_{\text{strip}}(S)-Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big]\Big|\le Q\ \Delta K \tag{5}
+\Big|\Pi_{\text{strip}}(S)-Q\big[(K_{\max}-S)^+-(K_{\min}-S)^+\big]\Big|\le Q\ \Delta K \qquad(5)
 ```
 
 
@@ -53,10 +53,10 @@ L'erreur est nulle si $`S`$ tombe exactement sur la grille (à la convention de 
 **Troncature : on réplique un put spread, pas un put.** Avec $`W=K_{\max}-K_{\min}`$ :
 
 - Si $`S\le K_{\min}`$ : $`\Pi=Q\ W`$ (constante, pas de protection supplémentaire).
-- Si $`K_{\min}<S<K_{\max}`$ : $`\Pi=Q\ (K_{\max}-S)`$.
+- Si $`K_{\min}\lt S\lt K_{\max}`$ : $`\Pi=Q\ (K_{\max}-S)`$.
 - Si $`S\ge K_{\max}`$ : $`\Pi=0`$.
 
-Le payoff est borné dans $`[0,QW]`$. Un put vanilla exigerait $`K_{\min}\to 0`$, donc une grille couvrant tout le bas de la distribution, ce que Kalshi ne liste pas. Avec $`K_{\min}>0`$, l'écart par rapport à un put vanilla vaut $`Q\ (K_{\min}-S)^+\le Q\ K_{\min}`$, et il tombe dans la queue basse.
+Le payoff est borné dans $`[0,QW]`$. Un put vanilla exigerait $`K_{\min}\to 0`$, donc une grille couvrant tout le bas de la distribution, ce que Kalshi ne liste pas. Avec $`K_{\min}\gt 0`$, l'écart par rapport à un put vanilla vaut $`Q\ (K_{\min}-S)^+\le Q\ K_{\min}`$, et il tombe dans la queue basse.
 
 ## 2. Binaire, call spread, gamma
 
@@ -64,7 +64,7 @@ Avec $`r=0`$, la parité put-call $`C-P=S-K`$ donne $`P(K+\varepsilon)-P(K)=C(K+
 
 
 ```math
-\text{YES}(K)=\mathbf{1}\lbrace S>K\rbrace =\lim_{\varepsilon\to 0}\frac{C(K)-C(K+\varepsilon)}{\varepsilon},\qquad \text{NO}=1-\text{YES} \tag{6}
+\text{YES}(K)=\mathbf{1}\lbrace S\gt K\rbrace =\lim_{\varepsilon\to 0}\frac{C(K)-C(K+\varepsilon)}{\varepsilon},\qquad \text{NO}=1-\text{YES} \qquad(6)
 ```
 
 
@@ -130,7 +130,7 @@ Donc :
 
 Vérification : le delta BS d'un put est $`-N(-d_1)=N(d_1)-1`$. Le delta du put spread long $`P(K_{\max})-P(K_{\min})`$ est donc $`N(d_1(K_{\max}))-N(d_1(K_{\min}))`$. Il coïncide avec la limite ci-dessus.
 
-Signe et bornes : $`d_1`$ décroît en $`K`$, donc $`N(d_1(K_{\max}))<N(d_1(K_{\min}))`$. D'où $`\Delta_{\text{total}}\in(-Q,0)`$, négatif comme un long NO. Pour $`K_{\min}\to 0`$ et $`K_{\max}\to\infty`$, $`\Delta\to -Q`$.
+Signe et bornes : $`d_1`$ décroît en $`K`$, donc $`N(d_1(K_{\max}))\lt N(d_1(K_{\min}))`$. D'où $`\Delta_{\text{total}}\in(-Q,0)`$, négatif comme un long NO. Pour $`K_{\min}\to 0`$ et $`K_{\max}\to\infty`$, $`\Delta\to -Q`$.
 
 Conséquence pour la couverture : la perp à détenir vaut $`h=-\Delta_{\text{total}}`$ en BTC, soit $`h=Q\big[N(d_1(K_{\min}))-N(d_1(K_{\max}))\big]`$. Le backtest prend déjà $`h=-\Delta_{\text{NO}}\cdot`$ contrats pour le strike unique ; la même convention s'applique au strip.
 
