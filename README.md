@@ -2,6 +2,8 @@
 
 Delta hedges a Polymarket "Bitcoin above K" binary with a BTC perpetual on Hyperliquid. The hedge is then compared with a strip of Kalshi binaries and with Deribit options, using a live recording and backtests over 207 daily expiries.
 
+A short note with the method and results: [note/binary-delta-hedge.pdf](note/binary-delta-hedge.pdf).
+
 ## Method
 
 - Binary priced as N(d2). Delta from the Black-Scholes formula with zero rate, hedged with the perp.
