@@ -207,7 +207,7 @@ def decomposition(tbl: Table, structure: str, sigma: str, days: set[str] | None 
     }
 
 
-# ----------------------------------------------------------------------------- markdown
+# markdown
 
 
 def _f(x: float, nd: int = 2) -> str:
@@ -355,7 +355,7 @@ def build_report(tbl: Table) -> str:
     return "\n".join(lines)
 
 
-# ----------------------------------------------------------------------------- figure
+# figure
 
 
 def _style(ax: Axes, title: str) -> None:

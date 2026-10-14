@@ -108,7 +108,7 @@ def gamma_zoom(day: str, d: dict[str, Any], out: Path) -> None:
     ax.legend(h1 + h2, l1 + l2, loc="upper left", bbox_to_anchor=(0, -0.1), ncol=2, frameon=False, fontsize=8)
     ax.set_xticks(range(0, HOURS + 1, 3))
     ax.set_xlabel("Heures depuis J−1 21:00 UTC (T0) jusqu'à J 21:00 (T1)")
-    ax.set_title(f"Mécanique du gamma — {date.fromisoformat(day):%d/%m/%Y}, BTC {100 * (d['prices'][-1] / d['prices'][0] - 1):+.2f} % sur la journée".replace(".", ","))
+    ax.set_title(f"Mécanique du gamma : {date.fromisoformat(day):%d/%m/%Y}, BTC {100 * (d['prices'][-1] / d['prices'][0] - 1):+.2f} % sur la journée".replace(".", ","))
     fig.tight_layout()
     fig.savefig(out, dpi=150)
     plt.close(fig)
