@@ -1,77 +1,77 @@
-# Friction de couverture : Kalshi contre Deribit
+# Hedging friction: Kalshi against Deribit
 
-Note préparatoire au benchmark Deribit (voir [deribit_benchmark_report.md](deribit_benchmark_report.md)). Consultée le 2026-10-12. Calculs analytiques, hypothèses explicites, sans données de marché.
+Preliminary note for the Deribit benchmark (see [deribit_benchmark_report.md](deribit_benchmark_report.md)). Consulted 2026-10-12. Analytical calculations with explicit assumptions, no market data.
 
-## 1. Barème Deribit (options BTC)
+## 1. Deribit fee schedule (BTC options)
 
-| Point | Valeur retenue | Statut | Source |
+| Item | Value used | Status | Source |
 |---|---|---|---|
-| Frais par contrat (taker, maker) | min(0,0003 BTC ; 0,125 · prix de l'option), soit 0,03 % du sous-jacent | CONFIRMÉ par extrait du support officiel (page refusée en lecture directe, HTTP 403) | support.deribit.com/hc/en-us/articles/25944746248989 (extrait de recherche) ; legacy.deribit.com/pages/information/fees (extrait) |
-| Plafond | 12,5 % de la prime, avant réduction par volume | CONFIRMÉ (mêmes extraits) | idem ; deribit.zendesk.com (extrait, article ancien d'environ 573 jours) |
-| Unité des prix et des frais | BTC. Formule : MIN(0,0003 BTC ; 0,125 × prix) × quantité | CONFIRMÉ (extrait) | support.deribit.com/hc/en-us/articles/25944746248989 |
-| Taille de contrat | 1 BTC (multiplicateur) | CONFIRMÉ, source tierce | paradigm.co/help/products/derivatives/venues/deribit (lu le 2026-10-12) ; bloc Deribit (extrait) |
-| Incrément de taille | 0,1 BTC (DO, options BTC) ; minimum de bloc 25 contrats, pour les blocs seulement | Incrément CONFIRMÉ source tierce ; minimum de trade 0,1 BTC NON CONFIRMÉ | paradigm.co ; support.deribit.com/hc/en-us/articles/25944688627229 (extrait) |
-| Taux maker | Identique au taker sur les options (formule commune) | CONFIRMÉ par extrait | support.deribit.com (extrait) |
-| Règle combo | Si le combo a au moins une patte achat et une patte vente, la direction la moins chère (somme des frais) tombe à 0. Les combos de même sens (straddle, strangle) sont exclus. | NON CONFIRMÉ sur la page officielle (extrait de recherche seulement) | extrait de l'article de frais support.deribit.com |
-| Options journalières | Aucune règle de frais de trading trouvée. Exemptées de frais de livraison (extrait). | NON CONFIRMÉ pour le trading | extrait Zendesk |
-| Frais de livraison | 0,015 % du sous-jacent, plafonné à 12,5 %. Sans objet ici : la clôture se fait à T1, avant l'expiration, donc aucune livraison. | NON CONFIRMÉ | review tierce ; extrait Zendesk |
-| Tiers de volume | Standard : 0,03 %. VIP1 : 0,025 %. Le standard est retenu. | VIP1 NON CONFIRMÉ (tableau illisible dans l'extrait) | legacy.deribit.com (extrait) |
+| Fee per contract (taker, maker) | min(0.0003 BTC, 0.125 × option price), i.e. 0.03% of the underlying | CONFIRMED by excerpt from the official support page (page refused on direct read, HTTP 403) | support.deribit.com/hc/en-us/articles/25944746248989 (search excerpt), legacy.deribit.com/pages/information/fees (excerpt) |
+| Cap | 12.5% of the premium, before volume discount | CONFIRMED (same excerpts) | same, deribit.zendesk.com (excerpt, an old article of about 573 days) |
+| Price and fee unit | BTC. Formula: MIN(0.0003 BTC, 0.125 × price) × quantity | CONFIRMED (excerpt) | support.deribit.com/hc/en-us/articles/25944746248989 |
+| Contract size | 1 BTC (multiplier) | CONFIRMED, third-party source | paradigm.co/help/products/derivatives/venues/deribit (read 2026-10-12), Deribit block (excerpt) |
+| Size increment | 0.1 BTC (DO, BTC options), minimum block of 25 contracts, blocks only | Increment CONFIRMED by third-party source, minimum trade of 0.1 BTC NOT CONFIRMED | paradigm.co, support.deribit.com/hc/en-us/articles/25944688627229 (excerpt) |
+| Maker rate | Same as taker on options (common formula) | CONFIRMED by excerpt | support.deribit.com (excerpt) |
+| Combo rule | If a combo has at least one buy leg and one sell leg, the cheaper direction (sum of fees) drops to 0. Same-direction combos (straddle, strangle) are excluded. | NOT CONFIRMED on the official page (search excerpt only) | excerpt of the fee article on support.deribit.com |
+| Daily options | No trading fee rule found. Exempt from delivery fees (excerpt). | NOT CONFIRMED for trading | Zendesk excerpt |
+| Delivery fee | 0.015% of the underlying, capped at 12.5%. Not relevant here: the position is closed at T1, before expiry, so there is no delivery. | NOT CONFIRMED | third-party review, Zendesk excerpt |
+| Volume tiers | Standard: 0.03%. VIP1: 0.025%. Standard is used. | VIP1 NOT CONFIRMED (table unreadable in the excerpt) | legacy.deribit.com (excerpt) |
 
-Conflits. CoinGecko indique 0,04 % ou 0,0004 BTC : ancien barème probable, non retenu. Cryptowisser évoque une structure de frais révisée mi-2026, non vérifiée : traitée comme risque.
+Sources conflict. CoinGecko shows 0.04% or 0.0004 BTC, probably an old schedule, so it is not used. Cryptowisser mentions a revised fee structure in mid-2026 that I could not verify, so it is treated as a risk.
 
-Hypothèse retenue pour tout point non confirmé : min(0,03 % S ; 12,5 % de la prime), par patte, en taker, à l'entrée et à la sortie. La règle combo n'est utilisée que comme sensibilité.
+For any point not confirmed, the assumption is min(0.03% of S, 12.5% of the premium), per leg, taker, at entry and at exit. The combo rule is used only as a sensitivity.
 
-Sources et dates (consultation 2026-10-12) : support.deribit.com/hc/en-us/articles/25944746248989 (HTTP 403 en direct, extraits de recherche) ; legacy.deribit.com/pages/information/fees (extrait ; DNS KO en direct) ; deribit.zendesk.com (403) ; docs.deribit.com/api-reference/combo-books/private-get_leg_prices.md (lu : `amount` en coin pour les options, pas de frais) ; paradigm.co/help/products/derivatives/venues/deribit (lu) ; coingecko.com/en/exchanges/deribit (conflit).
+Sources and dates (consulted 2026-10-12): support.deribit.com/hc/en-us/articles/25944746248989 (HTTP 403 on direct fetch, search excerpts used), legacy.deribit.com/pages/information/fees (excerpt, DNS error on direct fetch), deribit.zendesk.com (403), docs.deribit.com/api-reference/combo-books/private-get_leg_prices.md (read: `amount` is in coin for options, no fee), paradigm.co/help/products/derivatives/venues/deribit (read), coingecko.com/en/exchanges/deribit (conflict).
 
-## 2. Théorie comparée de la friction
+## 2. Friction under each model
 
-### 2.1 Formules
+### 2.1 Formulas
 
-Kalshi, par ordre de C contrats au prix P ($, entre 0 et 1) :
-
-
-```math
-F_K = \lceil 0{,}07\ C\ P(1-P) \rceil \ \text{cents}
-```
-
-
-Par contrat, en % de la prime :
+Kalshi, for C contracts at price P ($, between 0 and 1):
 
 
 ```math
-\frac{F_K}{C\ P} = 0{,}07\ (1-P)
+F_K = \lceil 0.07\ C\ P(1-P) \rceil \ \text{cents}
 ```
 
 
-Le frais absolu est maximal en P = 0,5 : 0,0175 $ par contrat. Le frais relatif est maximal en P → 0 (7 %), et le plafonnement d'arrondi ajoute au plus 1 cent par ordre.
-
-Deribit, par patte de quantité q (BTC), prix P_BTC (BTC) :
+As a share of the premium, per contract:
 
 
 ```math
-F_D = q\cdot\min\bigl(0{,}0003\ \text{BTC};\ 0{,}125\ P_{BTC}\bigr)\cdot S
+\frac{F_K}{C\ P} = 0.07\ (1-P)
 ```
 
 
-Frais relatif :
+The absolute fee is largest at P = 0.5, at $0.0175 per contract. The relative fee is largest as P goes to 0 (7%). Rounding up adds at most one cent per order.
+
+Deribit, per leg of quantity q (in BTC), with price P_BTC (in BTC):
 
 
 ```math
-\frac{F_D}{q\ P_{BTC}\ S} = \min\!\Bigl(\frac{0{,}0003}{P_{BTC}};\ 0{,}125\Bigr)
+F_D = q\cdot\min\bigl(0.0003\ \text{BTC};\ 0.125\ P_{BTC}\bigr)\cdot S
 ```
 
 
-Le régime à frais fixes (0,03 %) s'applique tant que P_BTC > 0,0024 BTC. Pour un put ATM en Black (r = 0), P_BTC ≈ 0,3989·σ√τ, donc :
+Relative fee:
 
 
 ```math
-\frac{F_D}{\text{prime}} \approx \frac{0{,}00075}{\sigma\sqrt{\tau}}
+\frac{F_D}{q\ P_{BTC}\ S} = \min\!\Bigl(\frac{0.0003}{P_{BTC}};\ 0.125\Bigr)
 ```
 
 
-Le frais relatif croît en 1/(σ√τ) : une option journalière coûte environ 2,6 fois plus, en %, qu'une option hebdomadaire au même σ (√7).
+The fixed-fee regime (0.03%) applies while P_BTC > 0.0024 BTC. For an at-the-money put in Black (r = 0), P_BTC ≈ 0.3989·σ√τ, so:
 
-Aller-retour : Deribit est payé à l'entrée (T0) et à la sortie (T1), car la position est revendue à T1. Kalshi est payé une seule fois, car le contrat va au règlement.
+
+```math
+\frac{F_D}{\text{premium}} \approx \frac{0.00075}{\sigma\sqrt{\tau}}
+```
+
+
+The relative fee grows as 1/(σ√τ). A daily option therefore costs about 2.6 times more, in percent, than a weekly option at the same σ (√7).
+
+Round trip: Deribit is paid at entry (T0) and at exit (T1), because the position is sold at T1. Kalshi is paid once, because the contract goes to settlement.
 
 
 ```math
@@ -79,56 +79,56 @@ Aller-retour : Deribit est payé à l'entrée (T0) et à la sortie (T1), car la 
 ```
 
 
-### 2.2 Chiffres (calculs analytiques, hypothèses explicites)
+### 2.2 Figures (analytical calculations, explicit assumptions)
 
-Hypothèses : r = 0, smile plat, S = 70 000 $ (illustratif, seul le % compte), T0 = 35 h, T1 = 11 h, σ ∈ {40 %, 55 %}. Précision ±0,2 pt (calcul gaussien analytique).
+Assumptions: r = 0, flat smile, S = $70,000 (illustrative, only the percentages matter), T0 = 35 h, T1 = 11 h, σ ∈ {40%, 55%}. Precision ±0.2 pt (analytical Gaussian calculation).
 
-Put ATM journalier, en % de la prime d'entrée :
+At-the-money daily put, as a percentage of the entry premium:
 
-| Quantité | σ = 40 % | σ = 55 % |
+| Quantity | σ = 40% | σ = 55% |
 |---|---|---|
-| Prime T0 (% S) | 1,008 | 1,387 |
-| Frais Deribit T0 (0,0003 BTC) | 2,97 % | 2,16 % |
-| Prime T1 (% S) | 0,565 | 0,778 |
-| Frais Deribit T1 | 5,31 % | 3,86 % |
-| Deribit aller-retour (% prime T0) | **5,95 %** | **4,33 %** |
-| Kalshi, équivalent ATM (strip de binaires sous K, pas 250 $), une fois | **4,9 %** | **4,9 %** |
+| Premium T0 (% of S) | 1.008 | 1.387 |
+| Deribit fee T0 (0.0003 BTC) | 2.97% | 2.16% |
+| Premium T1 (% of S) | 0.565 | 0.778 |
+| Deribit fee T1 | 5.31% | 3.86% |
+| Deribit round trip (% of T0 premium) | **5.95%** | **4.33%** |
+| Kalshi, ATM equivalent (strip of binaries below K, $250 step), once | **4.9%** | **4.9%** |
 
-Le 4,9 % Kalshi vient de Σ P_j·0,07·(1−P_j) / Σ P_j sur des binaires au pas de 250 $. Le ratio ne bouge presque pas avec σ. Les exemples de cette page prennent le pas de 250 $ des 177 jours à 9 pattes ; sur les 30 jours à 5 pattes, le pas est de 500 $ et la taille équivalente devient q = n/500.
+The 4.9% Kalshi figure comes from Σ P_j·0.07·(1−P_j) / Σ P_j over binaries on a $250 step. The ratio barely moves with σ. The examples on this page use the $250 step of the 177 nine-leg days. On the 30 five-leg days the step is $500, and the equivalent size becomes q = n/500.
 
-Put spread ±1 000 $ (long K+1 125, court K−1 125, pas Deribit ; équivalent au strip Kalshi de 9 pattes) :
+Put spread ±$1,000 (long K+1125, short K−1125, Deribit step, equivalent to the 9-leg Kalshi strip):
 
-| Quantité | σ = 40 % | σ = 55 % |
+| Quantity | σ = 40% | σ = 55% |
 |---|---|---|
-| Prime nette T0 (% S) | 1,621 | 1,629 |
-| Frais Deribit T0 (2 × 0,0003 BTC) | 3,70 % | 3,68 % |
-| Prime nette T1 (% S) | 1,612 | 1,613 |
-| Frais T1 (jambe longue 0,0003 ; jambe courte plafonnée à 0,000110 BTC en σ40 et 0,000276 BTC en σ55) | 2,54 % | 3,57 % |
-| Deribit aller-retour (% prime T0) | **6,2 %** | **7,2 %** |
-| Kalshi strip 9 pattes, une fois | **3,23 %** | **3,35 %** |
-| Deribit aller-retour, si combo confirmé (0,0003 à l'entrée + 0,0003 à la sortie) | 3,7 % | 3,7 % |
+| Net premium T0 (% of S) | 1.621 | 1.629 |
+| Deribit fee T0 (2 × 0.0003 BTC) | 3.70% | 3.68% |
+| Net premium T1 (% of S) | 1.612 | 1.613 |
+| Fee T1 (long leg 0.0003, short leg capped at 0.000110 BTC at σ40 and 0.000276 BTC at σ55) | 2.54% | 3.57% |
+| Deribit round trip (% of T0 premium) | **6.2%** | **7.2%** |
+| Kalshi 9-leg strip, once | **3.23%** | **3.35%** |
+| Deribit round trip if the combo rule is confirmed (0.0003 at entry + 0.0003 at exit) | 3.7% | 3.7% |
 
-Vérification dimensionnelle, n = 1 par patte : q = n/250 = 0,004 BTC. Kalshi : prime 4,50 $, frais 0,145 $ (0,18 $ si chaque patte est un ordre séparé, arrondi au cent supérieur). Deribit : prime 4,54 $ (σ40), frais entrée 0,168 $, frais sortie 0,115 $.
+Dimension check, n = 1 per leg: q = n/250 = 0.004 BTC. Kalshi: premium $4.50, fee $0.145 ($0.18 if each leg is a separate order, rounded up to the next cent). Deribit: premium $4.54 (σ40), entry fee $0.168, exit fee $0.115.
 
-### 2.3 Où chaque modèle pénalise le plus
+### 2.3 Where each model penalises most
 
-- Kalshi : le relatif vaut 0,07(1−P). Il pèse le plus sur les ailes (P → 0 : 7 % et plus avec l'arrondi). L'ATM paie le plus en absolu (1,75 ¢) mais le moins en relatif.
-- Deribit : le relatif vaut min(0,0003/P_BTC ; 12,5 %). Il pèse sur les ailes deux fois plus fort (plafond 12,5 % par patte). Le frais en $ est identique à tous les strikes (0,0003·S·q), donc les options bon marché sont pénalisées en %.
-- Le point faible de Deribit est l'aller-retour. Une option ATM à 40 % coûte 3 % à l'entrée et 5 % à la sortie. La patte courte du spread, presque sans valeur à T1, tombe au plafond.
-- Conclusion chiffrée : en ATM, Deribit à 40 % est plus cher que Kalshi sur l'aller-retour (5,9 % contre 4,9 %). À 55 %, il est moins cher (4,3 % contre 4,9 %). Sur le spread ±1 000 $, Deribit coûte environ 2 fois plus que Kalshi (6,2-7,2 % contre 3,2-3,4 %), sauf si la règle combo se confirme (3,7 %, à égalité).
+- Kalshi: the relative fee is 0.07(1−P). It hits the wings hardest (P → 0: 7%, more with rounding). The ATM strike pays the most in absolute terms (1.75 cents) but the least in relative terms.
+- Deribit: the relative fee is min(0.0003/P_BTC, 12.5%). It hits the wings about twice as hard, because of the 12.5% cap per leg. The dollar fee is the same at every strike (0.0003·S·q), so cheap options are penalised in percentage terms.
+- Deribit's weak point is the round trip. An ATM option at 40% costs 3% at entry and 5% at exit. The short leg of the spread, nearly worthless at T1, reaches the cap.
+- Numbers in brief: at the ATM strike with σ = 40%, Deribit is more expensive than Kalshi on the round trip (5.9% against 4.9%). At 55% it is cheaper (4.3% against 4.9%). On the ±$1,000 spread, Deribit costs about twice as much as Kalshi (6.2-7.2% against 3.2-3.4%), unless the combo rule is confirmed. In that case it is level (3.7%).
 
-### 2.4 Gamma en escalier et gamma continu
+### 2.4 Stepwise gamma and continuous gamma
 
-- Kalshi : le strip est une somme de binaires. Le delta saute de n/250 à chaque strike (9 marches). Le gamma est concentré sur 9 points, et l'erreur de couverture est bornée par le pas de 250 $.
-- Deribit : une option vanille ou un spread à 2 strikes a un delta continu par morceaux. Le gamma est lisse et maximal près des strikes, sans marche.
+- Kalshi: the strip is a sum of binaries. Delta jumps by n/250 at each strike (9 steps). Gamma sits at 9 points, and the hedging error is bounded by the $250 step.
+- Deribit: a vanilla option or a two-strike spread has a continuous, piecewise delta. Gamma is smooth and peaks near the strikes, with no step.
 
-## 3. Raccordement des échéances
+## 3. Matching expiries
 
-La fenêtre T0 = J−1 21:00 UTC → T1 = J 21:00 UTC est celle de Kalshi et du hedge Hyperliquid. Elle impose la même horloge à toutes les pattes. Le put journalier J+1 08:00 UTC est ouvert à T0 (35 h) et valorisé à T1 (11 h) : il n'expire jamais dans la fenêtre, donc aucun frais de livraison ni de règlement n'entre en jeu. L'option la plus proche qui couvre la fenêtre sans expirer dedans est ainsi la seule qui reste comparable au strip Kalshi. Le mark-to-market à T1 est la valeur de sortie, payée au taker.
+The window T0 = day J−1 21:00 UTC to T1 = day J 21:00 UTC is the one used by Kalshi and by the Hyperliquid hedge. It puts every leg on the same clock. The daily put expiring at J+1 08:00 UTC is open at T0 (35 h) and valued at T1 (11 h). It never expires inside the window, so no delivery or settlement fee applies. The nearest option that covers the window without expiring inside it is therefore the only one that stays comparable to the Kalshi strip. The mark-to-market at T1 is the exit value, paid as taker.
 
-## 4. Points non confirmés à lever avant conclusion
+## 4. Open points to settle before concluding
 
-1. Règle combo (direction la moins chère à 0) : confirmer sur la page officielle, ou auprès du support Deribit.
-2. Tiers VIP et changement de barème mi-2026 (Cryptowisser) : vérifier la date d'effet.
-3. Minimum de trade (0,1 BTC) : confirmer le minimum et l'incrément.
-4. Frais de livraison et exemption journalière : sans objet ici, à noter uniquement.
+1. Combo rule (cheapest direction at zero): confirm on the official page or with Deribit support.
+2. VIP tiers and the mid-2026 schedule change (Cryptowisser): check the effective date.
+3. Minimum trade (0.1 BTC): confirm the minimum and the increment.
+4. Delivery fee and daily-expiry exemption: not relevant here, noted only.

@@ -172,7 +172,7 @@ def backtest(raw: dict[str, Any], contracts: float, sigma_override: float | None
     sigma, source = implied_vol(yes_mid, s0, strike, t_years), "kalshi implied"
     if sigma_override is not None:
         sigma, source = sigma_override, "override"
-    elif sigma is None:  # S < K and mid above N(-sqrt(2|ln S/K|)): no implied root (docs/math_review.md §4)
+    elif sigma is None:  # S < K and mid above N(-sqrt(2|ln S/K|)): no implied root
         sigma, source = float(raw["dvol"][-1][4]) / 100, "deribit DVOL"
     delta_no = -binary_call_delta(s0, strike, sigma, t_years)
     hedge = round(contracts * -delta_no, HL_SZ_DECIMALS)

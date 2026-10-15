@@ -211,17 +211,17 @@ def decomposition(tbl: Table, structure: str, sigma: str, days: set[str] | None 
 
 
 def _f(x: float, nd: int = 2) -> str:
-    return f"{x:,.{nd}f}".replace(",", " ").replace(".", ",")
+    return f"{x:,.{nd}f}"
 
 
 def _p(p: float) -> str:
-    return "<0,001" if p < 0.001 else f"{p:.3f}".replace(".", ",")
+    return "<0.001" if p < 0.001 else f"{p:.3f}"
 
 
 def summary_table(tbl: Table, days: set[str] | None = None) -> list[str]:
     out = [
-        "| Structure | σ | n | Moyenne | Médiane | Écart-type | Err.-type | Sharpe/j | Sharpe ann. "
-        "| Min | Max | % gagnants | σ horaire moy. |",
+        "| Structure | σ | n | Mean | Median | Std dev | Std err | Sharpe/day | Sharpe ann. "
+        "| Min | Max | % winning | Mean hourly σ |",
         "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for st in STRUCTURES:
@@ -240,12 +240,12 @@ def _paired_rows(
     tbl: Table, a: tuple[str, str], b: tuple[str, str], label: str, days: set[str] | None
 ) -> list[str]:
     rows: list[str] = []
-    for fld, name in (("total_pnl", "total_pnl"), ("hedged_std_hourly", "σ horaire couvert")):
+    for fld, name in (("total_pnl", "total_pnl"), ("hedged_std_hourly", "hedged hourly σ")):
         x, y = select(tbl, a[0], a[1], fld, days), select(tbl, b[0], b[1], fld, days)
         pt = paired_test(x, y)
         rows.append(
             f"| {label} | {name} | {_f(pt.mean_diff)} | {_f(pt.t, 2)} | {_p(pt.p)} "
-            f"| [{_f(pt.ci_lo)} ; {_f(pt.ci_hi)}] |"
+            f"| [{_f(pt.ci_lo)}, {_f(pt.ci_hi)}] |"
         )
     return rows
 
@@ -254,13 +254,13 @@ def _var_row(tbl: Table, a: tuple[str, str], b: tuple[str, str], label: str, day
     vt = variance_test(select(tbl, a[0], a[1], "total_pnl", days), select(tbl, b[0], b[1], "total_pnl", days))
     return (
         f"| {label} | {_f(vt.var_ratio, 3)} | {_f(vt.sd_ratio, 3)} "
-        f"| [{_f(vt.sd_ci_lo, 3)} ; {_f(vt.sd_ci_hi, 3)}] | {_f(vt.pm_t, 2)} | {_p(vt.pm_p)} |"
+        f"| [{_f(vt.sd_ci_lo, 3)}, {_f(vt.sd_ci_hi, 3)}] | {_f(vt.pm_t, 2)} | {_p(vt.pm_p)} |"
     )
 
 
 def comparisons(tbl: Table, days: set[str] | None) -> list[str]:
     out = [
-        "| Comparaison | Variable | Diff. moyenne | t | p | IC 95 % bootstrap |",
+        "| Comparison | Variable | Mean diff. | t | p | 95% bootstrap CI |",
         "|---|---|---|---|---|---|",
     ]
     for sg in SIGMAS:
@@ -269,7 +269,7 @@ def comparisons(tbl: Table, days: set[str] | None) -> list[str]:
         out += _paired_rows(tbl, (st, "dvol"), (st, "kalshi_iv"), f"kalshi_iv − dvol ({st})", days)
     out += [
         "",
-        "| Comparaison | Var(b)/Var(a) | σ(b)/σ(a) | IC 95 % bootstrap σ(b)/σ(a) | t Pitman-Morgan | p |",
+        "| Comparison | Var(b)/Var(a) | σ(b)/σ(a) | 95% bootstrap CI of σ(b)/σ(a) | Pitman-Morgan t | p |",
         "|---|---|---|---|---|---|",
     ]
     for sg in SIGMAS:
@@ -281,7 +281,7 @@ def comparisons(tbl: Table, days: set[str] | None) -> list[str]:
 
 def decomposition_table(tbl: Table) -> list[str]:
     out = [
-        "| Structure | σ | Kalshi | Perp | −Frais HL | −Funding | = PnL total | Frais Kalshi moy. |",
+        "| Structure | σ | Kalshi | Perp | −HL fees | −Funding | = Total PnL | Mean Kalshi fee |",
         "|---|---|---|---|---|---|---|---|",
     ]
     for st in STRUCTURES:
@@ -305,38 +305,38 @@ def build_report(tbl: Table) -> str:
             dates_of(tbl), select(tbl, "single", "dvol", "s0"), select(tbl, "single", "dvol", "s1"), strict=True
         )
     }
-    ext_txt = ", ".join(f"{d} ({_f(100 * moves[d], 1)} %)" for d in sorted(ext))
+    ext_txt = ", ".join(f"{d} ({_f(100 * moves[d], 1)}%)" for d in sorted(ext))
     lines = [
-        "# Validation multi-jours : strike unique contre binary strip",
+        "# Multi-day validation: single strike against binary strip",
         "",
-        f"{len(all_days)} échéances journalières KXBTCD ({min(all_days)} → {max(all_days)}), "
-        "2 structures × 2 sources de σ. PnL en $ par échéance, net de frais Kalshi, frais Hyperliquid et funding. "
-        f"Bootstrap : {N_BOOT} tirages, graine {SEED}. Test apparié sur le même jour et la même σ.",
+        f"{len(all_days)} daily KXBTCD expiries ({min(all_days)} → {max(all_days)}), "
+        "2 structures × 2 σ sources. PnL in $ per expiry, net of Kalshi fees, Hyperliquid fees and funding. "
+        f"Bootstrap: {N_BOOT} draws, seed {SEED}. Paired test on the same day and the same σ.",
         "",
-        f"Jours extrêmes (|S1/S0 − 1| > {100 * EXTREME_MOVE:.0f} %) : {ext_txt}. "
-        f"Jours au pas de 250 $ (9 pattes) : {len(nine)} sur {len(all_days)}.",
+        f"Extreme days (|S1/S0 − 1| > {100 * EXTREME_MOVE:.0f}%): {ext_txt}. "
+        f"Days with a 250 $ strike step (9 legs): {len(nine)} of {len(all_days)}.",
         "",
-        "## Statistiques par combinaison (total_pnl)",
+        "## Statistics by combination (total_pnl)",
         "",
         *summary_table(tbl),
         "",
-        "## Décomposition de la moyenne de total_pnl",
+        "## Decomposition of the mean total_pnl",
         "",
         *decomposition_table(tbl),
         "",
-        "## Tests appariés, tous les jours",
+        "## Paired tests, all days",
         "",
-        "Différence = b − a (strip − single, ou kalshi_iv − dvol).",
+        "Difference = b − a (strip − single, or kalshi_iv − dvol).",
         "",
         *comparisons(tbl, None),
         "",
-        f"## Robustesse : sans les {len(ext)} jours extrêmes (n = {len(ex_ext)})",
+        f"## Without the {len(ext)} extreme days (n = {len(ex_ext)})",
         "",
         *summary_table(tbl, ex_ext),
         "",
         *comparisons(tbl, ex_ext),
         "",
-        f"## Robustesse : jours à 9 pattes seulement (n = {len(nine)})",
+        f"## 9-leg days only (n = {len(nine)})",
         "",
         *summary_table(tbl, nine),
         "",
@@ -344,14 +344,14 @@ def build_report(tbl: Table) -> str:
         "",
     ]
     periods = (
-        ("mars-mai", ("-03-", "-04-", "-05-")),
-        ("juin-août", ("-06-", "-07-", "-08-")),
-        ("septembre-octobre", ("-09-", "-10-")),
+        ("March-May", ("-03-", "-04-", "-05-")),
+        ("June-August", ("-06-", "-07-", "-08-")),
+        ("September-October", ("-09-", "-10-")),
     )
     for title, months in periods:
         sub = {d for d in all_days if any(m in d for m in months)}
         if len(sub) > 3:
-            lines += [f"## Sous-période {title} (n = {len(sub)})", "", *summary_table(tbl, sub), "", *comparisons(tbl, sub), ""]
+            lines += [f"## Sub-period {title} (n = {len(sub)})", "", *summary_table(tbl, sub), "", *comparisons(tbl, sub), ""]
     return "\n".join(lines)
 
 

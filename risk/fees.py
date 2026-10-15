@@ -1,6 +1,6 @@
 """Frais officiels Hyperliquid et Polymarket (paper trading).
 
-Sources (relevées le 2026-10-12, cf. docs/microstructure_review.md) :
+Sources (consulted 2026-10-12):
 - Hyperliquid, palier 0 : https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees.md
   taker 0,045 % (4,5 bp), maker 0,015 % (1,5 bp).
 - Polymarket, marchés crypto : https://docs.polymarket.com/trading/fees.md

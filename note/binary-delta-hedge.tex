@@ -78,20 +78,20 @@ A single Kalshi NO binary has the same exploding gamma. The strip buys NO contra
 
 \subsection{Live Session}
 
-The recorded session of 12 October 2026 lasted 41 minutes ($K=\$84{,}000$, $Q=1000$ shares). Amounts are in dollars.
+The recorded session of 12 October 2026 lasted 87 minutes, from 08:37 to 10:04 UTC ($K=\$84{,}000$, $Q=1000$ shares). Amounts are in dollars and are the final marks of the journal.
 
 \begin{center}
 \begin{tabular}{lrrrrrr}
 \toprule
 Strategy & PM P\&L & HL P\&L & PM fees & HL fees & Funding & Total \\
 \midrule
-Static  & $-141.22$ & $+82.44$ & 16.05 & 5.70   & $-0.37$ & $-80.17$ \\
-Dynamic & $-141.22$ & $+78.41$ & 16.05 & 127.76 & $-0.34$ & $-206.28$ \\
+Static  & $-131.22$ & $+77.44$ & 16.05 & 5.70   & $-0.73$ & $-74.80$ \\
+Dynamic & $-131.22$ & $+73.19$ & 16.05 & 181.43 & $-0.72$ & $-254.80$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The perp P\&L is similar in both cases. The gap of about \$122 in Hyperliquid fees comes from taker fees on the dynamic hedge.
+The perp P\&L is similar in both cases. The gap of about \$176 in Hyperliquid fees comes from taker fees on the dynamic hedge: 1,548 rebalancing fills against 40 static fills.
 
 \subsection{Single Strike, Strip and Deribit Options}
 
@@ -141,7 +141,7 @@ One such rebalance is cheap. The cost of the dynamic hedge comes from the number
 \section{Limits}
 
 \begin{itemize}
-\item \textbf{One live session:} the static against dynamic comparison rests on 41 minutes of recorded data. The kill-switch checks that need the session to reach expiry are pending.
+\item \textbf{One live session:} the static against dynamic comparison rests on 87 minutes of recorded data. The kill-switch checks that need the session to reach expiry are pending.
 \item \textbf{Simulated fills:} the book is replayed as published, with no market impact. Large orders would fill worse.
 \item \textbf{Maker fills:} a static limit order may not fill at all in real trading. The simulator fills it only when a trade crosses its price.
 \item \textbf{Model risk:} the digital price depends on $\sigma$, and for $S<K$ the implied volatility has no root when the mid is above the price peak.

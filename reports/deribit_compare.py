@@ -28,7 +28,7 @@ OUT_PNG = Path("reports/deribit_vs_kalshi.png")
 SEED, N_BOOT = 20261012, 10_000
 ORANGE, BLUE = "#E8710A", "#1A73E8"
 TEXT_COLS = ("date", "expiry", "structure", "sigma_source", "strikes", "spread_source_t0", "spread_source_t1")
-NAMES = {"strip": "Strip binaire Kalshi", "put_spread": "Put spread Deribit", "put": "Put vanille Deribit"}
+NAMES = {"strip": "Kalshi binary strip", "put_spread": "Deribit put spread", "put": "Deribit vanilla put"}
 Rows = dict[str, dict[str, dict[str, float]]]
 
 
@@ -70,60 +70,61 @@ def paired(a: np.ndarray, b: np.ndarray) -> tuple[float, float, float, float, fl
 
 
 def fmt(x: float, nd: int = 1) -> str:
-    return f"{x:,.{nd}f}".replace(",", " ").replace(".", ",")
+    return f"{x:,.{nd}f}"
 
 
 def report(data: Rows) -> str:
     dates = sorted(data["strip"])
     pnl = {k: np.array([data[k][d]["total_pnl"] for d in dates]) for k in data}
-    out = [f"# Strip Kalshi contre options Deribit ({len(dates)} échéances, {dates[0]} → {dates[-1]})", "",
-           "Même fenêtre partout : T0 = J−1 21:00 UTC → T1 = J 21:00 UTC. Deribit : journalière J+1 08:00 UTC valorisée à T1 "
-           "(smile des trades [T−3 h, T] en log-moneyness, ± demi-spread mesuré), quantité q = n/p BTC exacte, p étant le pas des strikes Kalshi (250 $ sur 177 jours, 500 $ sur 30 ; "
-           "Deribit impose en réalité un pas de 0,1 BTC). "
-           "Hedge statique Hyperliquid, fundings réels. Strip Kalshi : σ DVOL, budget = prime du strike unique. "
-           "Barème des frais : [deribit_friction.md](deribit_friction.md).", "",
-           "## PnL total couvert par échéance ($)", "",
-           "| Structure | Moyenne | Médiane | Écart-type | % jours gagnants | Cumul |", "|---|---|---|---|---|---|"]
+    out = [f"# Kalshi strip against Deribit options ({len(dates)} expiries, {dates[0]} → {dates[-1]})", "",
+           "Same window for every structure: T0 = day J−1 at 21:00 UTC, T1 = day J at 21:00 UTC. Deribit: daily expiry at "
+           "J+1 08:00 UTC, valued at T1 (trade smile over [T−3 h, T] in log-moneyness, plus or minus the measured half-spread). "
+           "Quantity q = n/p BTC exactly, where p is the Kalshi strike step (250 $ on 177 days and 500 $ on 30). "
+           "Deribit in practice requires a 0.1 BTC step. "
+           "Static Hyperliquid hedge, actual fundings. Kalshi strip: DVOL sigma, budget = premium of the single strike. "
+           "Fee schedule: [deribit_friction.md](deribit_friction.md).", "",
+           "## Total PnL covered per expiry ($)", "",
+           "| Structure | Mean | Median | Std dev | % winning days | Cumulative |", "|---|---|---|---|---|---|"]
     out += [f"| {NAMES[k]} | {fmt(v.mean())} | {fmt(float(np.median(v)))} | {fmt(v.std(ddof=1))} | "
             f"{fmt(100 * float((v > 0).mean()))} | {fmt(v.sum(), 0)} |" for k, v in pnl.items()]
-    out += ["", "## Tests appariés contre le strip Kalshi", "",
-            "| Comparaison | Écart moyen ($/jour) | p (t apparié) | IC 95 % bootstrap | Écart-type / strip | p Pitman-Morgan |",
+    out += ["", "## Paired tests against the Kalshi strip", "",
+            "| Comparison | Mean gap ($/day) | p (paired t) | 95% bootstrap CI | Std dev / strip | Pitman-Morgan p |",
             "|---|---|---|---|---|---|"]
     for k in ("put_spread", "put"):
         m, p, lo, hi, ratio, pm = paired(pnl["strip"], pnl[k])
-        out.append(f"| {NAMES[k]} − strip | {fmt(m)} | {fmt(p, 3)} | [{fmt(lo)} ; {fmt(hi)}] | {fmt(ratio, 2)} | {"< 0,001" if pm < 0.001 else fmt(pm, 3)} |")
-    out += ["", "## Friction sur les 7 mois", "",
-            "Frais et spread de l'option seulement : les frais du hedge Hyperliquid (même perp des deux côtés) sont exclus. "
-            "Kalshi paie ses frais une fois (le contrat va au règlement) et son spread à l'entrée ; Deribit paie frais et "
-            "demi-spread à l'entrée et à la sortie (clôture à T1).", "",
-            "| Plateforme | Frais ($) | Spread ($) | Friction totale ($) | Friction / prime | Friction par jour ($) |",
+        out.append(f"| {NAMES[k]} − strip | {fmt(m)} | {fmt(p, 3)} | [{fmt(lo)}, {fmt(hi)}] | {fmt(ratio, 2)} | {'< 0.001' if pm < 0.001 else fmt(pm, 3)} |")
+    out += ["", "## Friction over the 7 months", "",
+            "Option fees and spread only: the Hyperliquid hedge fees (same perp on both sides) are excluded. "
+            "Kalshi pays its fee once (the contract goes to settlement) and its spread at entry; Deribit pays fee and "
+            "half-spread at entry and at exit (closed at T1).", "",
+            "| Platform | Fees ($) | Spread ($) | Total friction ($) | Friction / premium | Friction per day ($) |",
             "|---|---|---|---|---|---|"]
-    for k, combo, label in (("strip", False, "Kalshi, strip"), ("put_spread", False, "Deribit, put spread (frais pleins)"),
-                            ("put_spread", True, "Deribit, put spread (remise combo, non confirmée)"),
-                            ("put", False, "Deribit, put vanille")):
+    for k, combo, label in (("strip", False, "Kalshi, strip"), ("put_spread", False, "Deribit, put spread (full fees)"),
+                            ("put_spread", True, "Deribit, put spread (combo rebate, unconfirmed)"),
+                            ("put", False, "Deribit, vanilla put")):
         fr = friction_by_day(data, k, combo)
         fee, spr = sum(f for f, _ in fr.values()), sum(s for _, s in fr.values())
         prem = sum(r["premium"] if k == "strip" else r["premium_entry"] for r in data[k].values())
         out.append(f"| {label} | {fmt(fee, 0)} | {fmt(spr, 0)} | {fmt(fee + spr, 0)} | {fmt(100 * (fee + spr) / prem)} % | "
                    f"{fmt((fee + spr) / len(dates))} |")
-    out += ["", "## Avant friction d'option (frais et spread rajoutés)", "",
-            "| Structure | Moyenne ($) | Écart-type ($) |", "|---|---|---|"]
+    out += ["", "## Before option friction (fees and spread added back)", "",
+            "| Structure | Mean ($) | Std dev ($) |", "|---|---|---|"]
     for k, v in pnl.items():
         fr = friction_by_day(data, k)
         g = v + np.array([sum(fr[d]) for d in dates])
         out.append(f"| {NAMES[k]} | {fmt(g.mean())} | {fmt(g.std(ddof=1))} |")
     out += robustness(data, dates, pnl)
-    out += ["", f"Bootstrap : {fmt(N_BOOT, 0)} tirages, graine {SEED}. Pitman-Morgan : corrélation entre (b − a) et (b + a), "
-            "t de Student à n − 2 ddl."]
+    out += ["", f"Bootstrap: {fmt(N_BOOT, 0)} draws, seed {SEED}. Pitman-Morgan: correlation between (b − a) and (b + a), "
+            "Student t with n − 2 degrees of freedom."]
     return "\n".join(out) + "\n"
 
 
-PERIODS = (("Mars-mai", "2026-03-01", "2026-05-31"), ("Juin-août", "2026-06-01", "2026-08-31"),
-           ("Septembre-octobre", "2026-09-01", "2026-10-31"))
+PERIODS = (("March-May", "2026-03-01", "2026-05-31"), ("June-August", "2026-06-01", "2026-08-31"),
+           ("September-October", "2026-09-01", "2026-10-31"))
 
 
 def pv(p: float) -> str:
-    return "< 0,001" if p < 0.001 else fmt(p, 3)
+    return "< 0.001" if p < 0.001 else fmt(p, 3)
 
 
 def ttest(x: np.ndarray) -> tuple[float, float]:
@@ -134,8 +135,8 @@ def robustness(data: Rows, dates: list[str], pnl: dict[str, np.ndarray]) -> list
     """Sub-periods, extreme days, strike-grid mismatch and capital: every step-2 figure quoted in the README."""
     spread_k = np.array([data["put"][d]["kalshi_spread"] for d in dates])
     fr = {k: np.array([sum(friction_by_day(data, k)[d]) for d in dates]) for k in ("strip", "put_spread")}
-    out = ["", "## Par sous-période (Deribit − strip, $/jour)", "",
-           "| Période | n | Put spread − strip | p | Put vanille − strip | p | Spread Kalshi par jour ($) |",
+    out = ["", "## By sub-period (Deribit − strip, $/day)", "",
+           "| Period | n | Put spread − strip | p | Vanilla put − strip | p | Kalshi spread per day ($) |",
            "|---|---|---|---|---|---|---|"]
     for lab, a, b in PERIODS:
         m = np.array([a <= d <= b for d in dates])
@@ -152,38 +153,38 @@ def robustness(data: Rows, dates: list[str], pnl: dict[str, np.ndarray]) -> list
     gap = np.array([data["put_spread"][d]["max_payoff_gap_usd"] for d in dates])
     debit = np.array([data["put_spread"][d]["premium_entry"] for d in dates])
     notional = np.array([data["put_spread"][d]["perp_notional_usd"] for d in dates])
-    out += ["", "## Décomposition et robustesse (put spread − strip)", "",
-            f"- Écart total : {fmt(float(diff.mean()))} $/jour, dont friction d'option {fmt(mf)} $ (p {pv(pf)}) "
-            f"et reste avant friction {fmt(mr)} $ (p {pv(pr)}).",
-            f"- Régression de l'écart quotidien sur le spread Kalshi du jour : écart = {fmt(float(icpt))} + {fmt(float(slope), 2)} × spread "
-            f"(corrélation {fmt(float(np.corrcoef(spread_k, diff)[0, 1]), 2)}).",
-            f"- Septembre-octobre sans les jours |S1/S0 − 1| > 5 % (n = {int((late & calm).sum())}) : {fmt(ml)} $/jour, p {pv(pl)}.",
-            f"- Écart de payoff maximal dû à la grille Deribit (pas de 500 $) : |écart| médian {fmt(float(np.median(np.abs(gap))), 0)} $, "
-            f"médiane signée {fmt(float(np.median(gap)), 0)} $ ; corrélation avec l'écart de PnL {fmt(float(np.corrcoef(gap, diff)[0, 1]), 2)}.",
-            f"- Capital : le put spread est acheté (débit net médian {fmt(float(np.median(debit)), 0)} $, perte maximale de l'option) ; "
-            f"nominal médian du hedge perp {fmt(float(np.median(notional)) / 1000)} k$."]
+    out += ["", "## Breakdown (put spread − strip)", "",
+            f"- Total gap: {fmt(float(diff.mean()))} $/day, of which option friction {fmt(mf)} $ (p {pv(pf)}) "
+            f"and the remainder before friction {fmt(mr)} $ (p {pv(pr)}).",
+            f"- Regression of the daily gap on the same-day Kalshi spread: gap = {fmt(float(icpt))} + {fmt(float(slope), 2)} × spread "
+            f"(correlation {fmt(float(np.corrcoef(spread_k, diff)[0, 1]), 2)}).",
+            f"- September-October without the days with |S1/S0 − 1| > 5% (n = {int((late & calm).sum())}): {fmt(ml)} $/day, p {pv(pl)}.",
+            f"- Maximum payoff gap from the Deribit strike grid (500 $ step): median |gap| {fmt(float(np.median(np.abs(gap))), 0)} $, "
+            f"median signed gap {fmt(float(np.median(gap)), 0)} $, and correlation with the PnL gap {fmt(float(np.corrcoef(gap, diff)[0, 1]), 2)}.",
+            f"- Capital: the put spread is bought (median net debit {fmt(float(np.median(debit)), 0)} $, maximum loss is the option premium); "
+            f"median perp hedge notional {fmt(float(np.median(notional)) / 1000)} k$."]
     return out
 
 
 def figure(data: Rows) -> None:
     dates = sorted(data["strip"])
     x = [mdates.date2num(date.fromisoformat(d)) for d in dates]  # type: ignore[no-untyped-call]
-    style = {"strip": (ORANGE, "-", "Binary Strip Kalshi"), "put_spread": (BLUE, "-", "Put spread Deribit"),
-             "put": (BLUE, "--", "Vanilla Put Deribit")}
+    style = {"strip": (ORANGE, "-", "Kalshi binary strip"), "put_spread": (BLUE, "-", "Deribit put spread"),
+             "put": (BLUE, "--", "Deribit vanilla put")}
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(11, 7.5), sharex=True, gridspec_kw={"height_ratios": [3, 2]})
     for k, (c, ls, lab) in style.items():
         fr = friction_by_day(data, k)
         a1.plot(x, np.cumsum([data[k][d]["total_pnl"] for d in dates]), color=c, ls=ls, lw=2, label=lab)
         a2.plot(x, np.cumsum([sum(fr[d]) for d in dates]), color=c, ls=ls, lw=2, label=lab)
     a1.axhline(0, color="#888888", lw=0.8)
-    a1.set_ylabel("PnL cumulé couvert ($)")
-    a1.set_title(f"Strip Kalshi contre options Deribit, n = {len(dates)} échéances journalières (hedge statique Hyperliquid)")
-    a2.set_ylabel("Friction cumulée ($)\nfrais + spread d'option")
+    a1.set_ylabel("Cumulative hedged PnL ($)")
+    a1.set_title(f"Kalshi strip against Deribit options, n = {len(dates)} daily expiries (static Hyperliquid hedge)")
+    a2.set_ylabel("Cumulative friction ($)\nfees + option spread")
     a1.legend(loc="lower left", frameon=False)
     a2.legend(loc="upper left", frameon=False)
     for ax in (a1, a2):
         ax.grid(alpha=0.25)
-    a2.xaxis.set_major_formatter(mdates.DateFormatter("%d/%m"))  # type: ignore[no-untyped-call]
+    a2.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))  # type: ignore[no-untyped-call]
     fig.tight_layout()
     fig.savefig(OUT_PNG, dpi=150)
     plt.close(fig)

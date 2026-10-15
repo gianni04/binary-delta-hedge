@@ -14,7 +14,7 @@ A short note with the method and results: [note/binary-delta-hedge.pdf](note/bin
 
 ## Results
 
-- Session of 12/10/2026 (41 minutes live): static hedge P&L -80.17 $, dynamic -206.28 $. Most of the gap is Hyperliquid taker fees: 127.76 $ against 5.70 $.
+- Session of 12/10/2026 (87 minutes live, 08:37 to 10:04 UTC): static hedge P&L -74.80 $, dynamic -254.80 $. Most of the gap is Hyperliquid taker fees: 181.43 $ against 5.70 $.
 - One Kalshi trade: the strip beats the single strike by 221 $. The gain comes from the Kalshi leg, not from lower gamma.
 - Over 207 expiries, the strip halves the daily P&L standard deviation (361.80 $ to 185.95 $, with DVOL sigma). The mean stays negative at -58.0 $ per day.
 - Against Deribit, the put spread beats the strip by 21.7 $ per day (p = 0.002). The gap reverses in September-October (-34.5 $ per day), when the Kalshi spread narrows.
