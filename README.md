@@ -6,10 +6,10 @@ A short note with the method and results: [note/binary-delta-hedge.pdf](note/bin
 
 ## Method
 
-- Binary priced as N(d2). Delta from the Black-Scholes formula with zero rate, hedged with the perp.
+- Binary priced as N(d2). Delta from the Black-Scholes formula (Black and Scholes, 1973) with zero rate, hedged with the perp.
 - Static hedge (one order) against dynamic hedge (rebalance on each threshold). Kill switch 2 hours before expiry.
 - Simulated execution: taker orders walk the order book level by level and pay fees. Maker orders fill only when a trade crosses their price.
-- Kalshi strip: 9 NO binaries, 250 dollars apart, equal weights. It replicates a put spread.
+- Kalshi strip: 9 NO binaries, 250 dollars apart, equal weights. It replicates a put spread (Breeden and Litzenberger, 1978; Carr and Madan, 1998).
 - Benchmark against Deribit DVOL options: a put spread and a vanilla put.
 
 ## Results
@@ -33,3 +33,11 @@ python -m pytest
 ```
 
 The tests use captured live messages in `tests/fixtures/`. The kill-switch audit (`python -m risk.audit`) reports three checks as pending on the committed journal, because that session ended before expiry.
+
+## References
+
+Black, F. and Scholes, M. (1973). The pricing of options and corporate liabilities. Journal of Political Economy, 81(3), 637-654. https://doi.org/10.1086/260062
+
+Breeden, D. T. and Litzenberger, R. H. (1978). Prices of state-contingent claims implicit in option prices. The Journal of Business, 51(4), 621-651. https://doi.org/10.1086/296025
+
+Carr, P. and Madan, D. (1998). Towards a theory of volatility trading. In E. Jouini, J. Cvitanic and M. Musiela (eds.), Option Pricing, Interest Rates and Risk Management, Cambridge University Press, 2001, pp. 458-476. https://doi.org/10.1017/CBO9780511569708.013

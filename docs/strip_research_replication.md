@@ -144,9 +144,9 @@ Consequence for hedging: the perp to hold is $`h=-\Delta_{\text{total}}`$ in BTC
 
 ## Sources
 
-1. Carr, P. & Madan, D. (1998). "Towards a Theory of Volatility Trading". In R. Jarrow (ed.), *Volatility: New Estimation Techniques for Pricing Derivatives*, Risk Books, pp. 417-427. Title and pages taken from secondary references.
+1. Carr, P. & Madan, D. (1998). "Towards a Theory of Volatility Trading". Reprinted in E. Jouini, J. Cvitanic & M. Musiela (eds.), *Option Pricing, Interest Rates and Risk Management*, Cambridge University Press, 2001, pp. 458-476. DOI 10.1017/CBO9780511569708.013.
 2. Breeden, D. T. & Litzenberger, R. H. (1978). "Prices of State-Contingent Claims Implicit in Option Prices". *Journal of Business*, 51(4), 621-651. DOI 10.1086/296025.
-3. Black, F. & Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities". *Journal of Political Economy*, 81(3), 637-654.
-4. Hull, J. C., *Options, Futures and Other Derivatives* (current edition), chapter "Exotic Options", section on binaries.
-5. Taleb, N. N. (1997). *Dynamic Hedging: Managing Vanilla and Exotic Options*, Wiley. See the entries "binary options" and "call spread" in the index.
-6. Carr, Ellis & Gupta (1998), *Journal of Finance*, 53(3), 1165-1190. A separate article with a similar title. Do not confuse it with item 1.
+3. Black, F. & Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities". *Journal of Political Economy*, 81(3), 637-654. DOI 10.1086/260062.
+4. Hull, J. C., *Options, Futures, and Other Derivatives*, Pearson, chapter "Exotic Options", section on binaries.
+5. Taleb, N. N. (1997). *Dynamic Hedging: Managing Vanilla and Exotic Options*, John Wiley & Sons. See the entries "binary options" and "call spread" in the index.
+6. Carr, Ellis & Gupta (1998), *Journal of Finance*, 53(3), 1165-1190. DOI 10.1111/0022-1082.00048. A separate article with a similar title. Do not confuse it with item 1.
