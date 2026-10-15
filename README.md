@@ -23,7 +23,7 @@ A short note with the method and results: [note/binary-delta-hedge.pdf](note/bin
 
 ## Data
 
-Public APIs: Polymarket CLOB, Hyperliquid, Kalshi, Deribit (DVOL and trades) and Binance BTC/USDT 1-minute candles for resolution. The raw API caches (about 1 GB) are not in the repo. The backtests download them again.
+Public APIs: Polymarket CLOB, Hyperliquid, Kalshi (prices and the settlement results used for resolution) and Deribit (DVOL and trades). The raw API caches (about 1 GB) are not in the repo. The backtests download them again.
 
 ## Run it
 

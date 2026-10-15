@@ -6,7 +6,7 @@ Preliminary note for the Deribit benchmark (see [deribit_benchmark_report.md](de
 
 | Item | Value used | Status | Source |
 |---|---|---|---|
-| Fee per contract (taker, maker) | min(0.0003 BTC, 0.125 × option price), i.e. 0.03% of the underlying | CONFIRMED by excerpt from the official support page (page refused on direct read, HTTP 403) | support.deribit.com/hc/en-us/articles/25944746248989 (search excerpt), legacy.deribit.com/pages/information/fees (excerpt) |
+| Fee per contract (taker, maker) | min(0.0003 BTC, 0.125 × option price), i.e. 0.03% of the underlying | CONFIRMED by excerpt from the official support page; direct read refused on 2026-10-12 (HTTP 403), readable on 2026-10-15 (HTTP 200 with a browser user agent, after a redirect to the same article with the suffix -Fees), where the standard options fee is 3 bps maker and taker with a 12.5% cap of the premium | support.deribit.com/hc/en-us/articles/25944746248989 (search excerpt), legacy.deribit.com/pages/information/fees (excerpt) |
 | Cap | 12.5% of the premium, before volume discount | CONFIRMED (same excerpts) | same, deribit.zendesk.com (excerpt, an old article of about 573 days) |
 | Price and fee unit | BTC. Formula: MIN(0.0003 BTC, 0.125 × price) × quantity | CONFIRMED (excerpt) | support.deribit.com/hc/en-us/articles/25944746248989 |
 | Contract size | 1 BTC (multiplier) | CONFIRMED, third-party source | paradigm.co/help/products/derivatives/venues/deribit (read 2026-10-12), Deribit block (excerpt) |
@@ -21,7 +21,7 @@ Sources conflict. CoinGecko shows 0.04% or 0.0004 BTC, probably an old schedule,
 
 For any point not confirmed, the assumption is min(0.03% of S, 12.5% of the premium), per leg, taker, at entry and at exit. The combo rule is used only as a sensitivity.
 
-Sources and dates (consulted 2026-10-12): support.deribit.com/hc/en-us/articles/25944746248989 (HTTP 403 on direct fetch, search excerpts used), legacy.deribit.com/pages/information/fees (excerpt, DNS error on direct fetch), deribit.zendesk.com (403), docs.deribit.com/api-reference/combo-books/private-get_leg_prices.md (read: `amount` is in coin for options, no fee), paradigm.co/help/products/derivatives/venues/deribit (read), coingecko.com/en/exchanges/deribit (conflict).
+Sources and dates (consulted 2026-10-12): support.deribit.com/hc/en-us/articles/25944746248989 (HTTP 403 on direct fetch on 2026-10-12, search excerpts used; HTTP 200 on 2026-10-15 with a browser user agent, redirecting to the -Fees article, which also lists the combo discount, the 0.015% options delivery fee capped at 12.5%, and no delivery fee on daily options), legacy.deribit.com/pages/information/fees (excerpt, DNS error on direct fetch), deribit.zendesk.com (403), docs.deribit.com/api-reference/combo-books/private-get_leg_prices.md (read: `amount` is in coin for options, no fee), paradigm.co/help/products/derivatives/venues/deribit (read), coingecko.com/en/exchanges/deribit (conflict).
 
 ## 2. Friction under each model
 
